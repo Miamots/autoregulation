@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Autorégulation au quotidien</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap">
+<style>
+:root{
+  --paper:#fffaf4; --card:#fff; --ink:#3a3550; --muted:#7a7286; --line:#efe4da;
+  --teal:#2f7a66; --mint:#e3f2ec; --rose:#b8324f; --pink:#fde4ec; --gold:#9a6b12; --cream:#fff4d9;
+  --blue:#3f63a8; --sky:#e6eefb; --lilac:#f1e8fa;
+  --env:#5fa58b; --envbg:#f2f9f5; --task:#d2577b; --taskbg:#fdf2f6;
+  --display:"Barlow",system-ui,sans-serif; --body:"Barlow",system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:80px}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16.5px;line-height:1.5;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--paper);z-index:40}
+img{max-width:100%;display:block}
+button{font:inherit;color:inherit;cursor:pointer}
+input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid #f2c94c;outline-offset:2px;border-radius:8px}
+[hidden]{display:none!important}
+h1,h2,h3,h4{font-family:var(--display);font-weight:600;margin:0;line-height:1.2;text-wrap:balance}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+header{padding-block:18px 8px}
+.hero{display:flex;align-items:center;gap:16px;background:linear-gradient(120deg,#fde4ec,#fff4d9 55%,#e3f2ec);border-radius:28px 12px 30px 14px;padding:14px 20px}
+.hero img{width:78px;flex:none}
+.hero h1{font-size:clamp(1.25rem,3.6vw,1.75rem);color:var(--ink)}
+.hero p{margin:2px 0 0;color:var(--muted);font-weight:600}
+
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--paper);padding-block:10px;border-bottom:1.5px solid var(--line)}
+.tabrow{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+.tabrow::-webkit-scrollbar{display:none}
+.tab{flex:none;border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:8px 16px;font-family:var(--display);font-weight:500;font-size:.95rem;color:var(--muted);display:flex;gap:7px;align-items:center}
+.tab[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.badge{background:#f28aa8;color:#fff;border-radius:999px;font-size:.75rem;min-width:20px;height:20px;padding:0 6px;display:inline-grid;place-items:center;font-family:var(--body);font-weight:800}
+.badge:empty{display:none}
+
+main{padding-block:20px 48px}
+.view{display:grid;gap:20px}
+.intro h2{font-size:1.5rem}
+.intro p{margin:4px 0 0;color:var(--muted);max-width:64ch}
+.kicker{font-family:var(--display);font-weight:500;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--rose)}
+
+/* Grille des moments */
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.mcard{display:grid;grid-template-rows:150px auto;text-align:left;border:none;border-radius:22px;padding:12px 14px 16px;background:var(--bg);box-shadow:0 2px 0 rgba(58,53,80,.06);transition:transform .15s}
+.mcard:hover{transform:translateY(-2px)}
+.mcard img{height:140px;width:100%;object-fit:contain;justify-self:center}
+.mcard h3{font-size:1.15rem;color:var(--c)}
+.mcard span{font-size:.9rem;color:var(--muted)}
+.mcard .count{display:inline-block;margin-top:4px;font-weight:700;color:var(--rose);font-size:.85rem}
+
+/* Détail d'un moment */
+.back{justify-self:start;border:none;background:none;color:var(--muted);font-weight:700;padding:4px 0}
+.mhead{display:flex;align-items:center;gap:16px;background:var(--bg);border-radius:24px;padding:14px 18px}
+.mhead img{width:min(170px,34vw);flex:none}
+.mhead h2{font-size:clamp(1.5rem,4vw,2rem);color:var(--c)}
+.mhead p{margin:6px 0 0;font-size:.98rem}
+.hint{font-size:.9rem;color:var(--muted);display:flex;align-items:center;gap:6px}
+.coreg{background:var(--pink);border-radius:20px;padding:14px 16px}
+.coreg h3{color:var(--rose);font-size:1.15rem;margin-bottom:6px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.colh{font-family:var(--display);font-weight:600;color:#fff;border-radius:14px;padding:7px 14px;font-size:1.05rem}
+.colh.env{background:#7cb8a1}.colh.task{background:#e39ab0}
+.col{display:grid;gap:10px;align-content:start}
+.lever{border-radius:16px;padding:10px 12px}
+.lever.e{background:var(--envbg)}.lever.t{background:var(--taskbg)}
+.lever h4{font-size:1rem;margin-bottom:4px}
+.remind{border:1.5px dashed var(--rc);border-radius:16px;padding:9px 12px;display:grid;gap:6px}.remind.e{--rc:#9fcbb9}.remind.t{--rc:#eab3c4}
+.remind .rk{margin:0;font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}.remind .rq{margin:0;font-size:.9rem;font-style:italic;color:var(--muted)}
+.rchips{display:flex;flex-wrap:wrap;gap:5px}.rchips span{background:#fff;border:1px solid var(--rc);border-radius:999px;padding:2px 10px;font-size:.86rem;font-weight:600}
+.rinsp{margin:6px 2px 0;font-size:.88rem;font-style:italic;color:var(--muted)}
+.lever.e h4{color:var(--teal)}.lever.t h4{color:var(--rose)}
+.ideas{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.idea{display:flex;align-items:flex-start;gap:8px;padding:4px 2px;border-radius:10px}
+.idea span{flex:1;font-size:.97rem}
+.heart{flex:none;width:32px;height:32px;margin:-4px 0;border:none;border-radius:50%;background:transparent;display:grid;place-items:center}
+.heart svg{width:20px;height:20px;fill:none;stroke:#d9a3b3;stroke-width:2;transition:transform .15s}
+.heart[aria-pressed="true"] svg{fill:#f2708f;stroke:#e2507a;transform:scale(1.12)}
+.idea:has(.heart[aria-pressed="true"]){background:rgba(255,255,255,.75)}
+.tip{display:flex;gap:10px;background:var(--cream);border-radius:16px;padding:12px 14px}
+.tip b{color:var(--gold)}
+.warn{background:#fdecea;border-left:5px solid #e07a6f;border-radius:12px;padding:10px 14px;font-size:.92rem}
+
+/* Lire la situation */
+.qcard{background:#fff;border:1.5px solid var(--line);border-radius:22px;padding:16px 18px;display:grid;gap:12px}
+.qnum{font-family:var(--display);font-weight:600;width:38px;height:38px;border-radius:50%;background:var(--cream);color:var(--gold);display:grid;place-items:center;flex:none;font-size:1.15rem}
+.qtitle{display:flex;gap:12px;align-items:center}
+.qtitle h3{font-size:1.2rem}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.choice{display:flex;gap:10px;align-items:center;text-align:left;border:2px solid transparent;border-radius:18px;padding:12px 14px}
+.choice img{width:72px;flex:none}
+.choice b{font-family:var(--display);font-weight:600;font-size:1.05rem;display:block}
+.choice small{color:var(--muted);font-size:.9rem}
+.choice.yes{background:var(--mint)}.choice.yes b{color:var(--teal)}
+.choice.no{background:#fde9e5}.choice.no b{color:#b4473a}
+.choice[aria-pressed="true"].yes{border-color:var(--teal)}.choice[aria-pressed="true"].no{border-color:#b4473a}
+.panel{border-radius:18px;padding:14px 16px}
+.panel h4{font-size:1.05rem;margin-bottom:6px}
+.p-mint{background:var(--mint)}.p-mint h4{color:var(--teal)}
+.p-rose{background:#fde9e5}.p-rose h4{color:#b4473a}
+.p-sky{background:var(--sky)}.p-sky h4{color:var(--blue)}
+.p-cream{background:var(--cream)}.p-cream h4{color:var(--gold)}
+.p-lilac{background:var(--lilac)}.p-lilac h4{color:#7d58a8}
+.p-grey{background:#f4f1f3}.p-grey h4{color:#6e6a72}
+ul.dots{margin:0;padding-left:18px;display:grid;gap:3px}
+ul.dots li::marker{color:#e2708f}
+.factors{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.factor{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:10px 12px;display:grid;gap:4px;align-content:start}
+.factor img{width:44px;height:44px;object-fit:contain}
+.factor h4{font-size:1rem;color:var(--ink)}
+.factor ul{font-size:.9rem}
+.answers{display:flex;flex-wrap:wrap;gap:8px}
+.answers span{border-radius:999px;padding:6px 14px;font-weight:700;font-size:.92rem}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips span{background:#fff;border-radius:999px;padding:5px 12px;font-weight:700;font-size:.92rem;color:#8a5a0e;box-shadow:0 1px 0 #f0d9a0}
+.linkbtn{border:none;background:none;padding:0;color:var(--teal);font-weight:800;text-decoration:underline;text-underline-offset:3px}
+.btn{border:none;border-radius:999px;background:var(--ink);color:#fff;padding:10px 18px;font-family:var(--display);font-weight:500;font-size:1rem}
+.btn.soft{background:#fff;color:var(--ink);border:1.5px solid var(--line)}
+.btn.pink{background:#e2708f}
+.btn[disabled]{opacity:.55;cursor:default}
+
+/* Respiration */
+.breath{background:linear-gradient(160deg,#e6eefb,#f1e8fa);border-radius:26px;padding:18px;display:grid;gap:14px;justify-items:center;text-align:center}
+.breath h3{font-size:1.35rem;color:var(--blue)}
+.breath>p{margin:0;max-width:52ch;color:var(--ink)}
+.orb-wrap{position:relative;width:min(260px,70vw);aspect-ratio:1;display:grid;place-items:center}
+.orb-ring{position:absolute;inset:0;border-radius:50%;border:3px dashed rgba(63,99,168,.25)}
+.orb{width:42%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#bcd2f2 45%,#8fb0e3);box-shadow:0 8px 30px rgba(63,99,168,.25);transition:width var(--dur,5s) ease-in-out}
+.orb.big{width:96%}
+.orb-label{position:absolute;font-family:var(--display);font-weight:600;font-size:1.35rem;color:var(--blue);text-shadow:0 1px 0 #fff}
+.seg{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.seg button{border:1.5px solid rgba(63,99,168,.3);background:#fff;border-radius:999px;padding:6px 14px;font-weight:700;font-size:.92rem;color:var(--blue)}
+.seg button[aria-pressed="true"]{background:var(--blue);color:#fff;border-color:var(--blue)}
+.timer{font-family:var(--display);font-size:1.1rem;color:var(--muted);min-height:1.5em}
+.breath .small{font-size:.9rem;color:var(--muted)}
+
+/* Stratégies adulte */
+.bank{display:grid;gap:12px}
+.bcat{display:grid;grid-template-columns:90px 1fr;gap:14px;align-items:center;border-radius:20px;padding:12px 14px}
+.bcat img{width:90px;height:100px;object-fit:contain}
+.bcat h4{font-size:1.1rem;margin-bottom:8px}
+.pick{display:flex;flex-wrap:wrap;gap:6px}
+.pick button{border:1.5px solid rgba(58,53,80,.12);background:rgba(255,255,255,.85);border-radius:999px;padding:5px 12px;font-size:.92rem;font-weight:600;display:flex;gap:5px;align-items:center}
+.pick button[aria-pressed="true"]{background:#e2708f;color:#fff;border-color:#e2708f}
+.pick button[aria-pressed="true"]::before{content:"♥"}
+.addform{display:flex;gap:8px}.addform input{flex:1;min-width:0;border:1.5px solid rgba(184,50,79,.25);border-radius:999px;padding:9px 14px;background:#fff}
+.own{display:inline-flex;align-items:center;gap:0}.own .x{padding:0 6px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* Mes idées */
+.empty{background:#fff;border:2px dashed var(--line);border-radius:22px;padding:24px;text-align:center;display:grid;gap:10px;justify-items:center}
+.empty img{width:120px}
+.who{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.who label{display:grid;gap:4px;font-weight:700;font-size:.92rem;color:var(--muted)}
+.who input{border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff}
+.opt{display:flex;gap:8px;align-items:center;font-weight:600}
+.opt input{width:20px;height:20px;accent-color:#e2708f}
+.mine{background:#fff;border:1.5px solid var(--line);border-radius:22px;padding:14px 16px;display:grid;gap:10px}
+.minehead{display:flex;gap:12px;align-items:center}
+.minehead img{width:64px;height:56px;object-fit:contain;flex:none}
+.minehead h3{flex:1;font-size:1.15rem}
+.mine .grp{font-family:var(--display);font-weight:500;font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
+.mine ul{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.mine li{display:flex;gap:8px;align-items:flex-start;background:#fdfaf7;border-radius:10px;padding:6px 8px}
+.mine li span{flex:1}
+.x{border:none;background:none;color:#c0b5bd;font-size:1.25rem;line-height:1;padding:0 4px}
+.dlbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:var(--cream);border-radius:18px;padding:12px 14px}
+.msg{font-size:.92rem;color:var(--muted);min-height:1.2em}
+.note{font-size:.88rem;color:var(--muted)}
+
+.mineboxes{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mbox{display:grid;gap:3px;border:2px dashed;border-radius:16px;padding:12px 14px}
+.mbox b{font-family:var(--display);font-weight:600;font-size:1.02rem}.mbox small{color:var(--muted);font-style:italic;font-size:.88rem}
+.mbox textarea{border:none;border-radius:10px;padding:8px 10px;background:rgba(255,255,255,.8);resize:vertical;min-height:70px}
+.helper summary{cursor:pointer;color:var(--teal);font-weight:700;font-size:.92rem}
+.ladder{display:grid;gap:4px;margin-top:10px}
+.rung{display:grid;grid-template-columns:1fr auto;gap:0 10px;border-radius:12px;padding:8px 12px}
+.rung b{font-family:var(--display);font-weight:600}.rung span{grid-column:1;font-size:.88rem;color:var(--muted)}
+.rung em{grid-row:1/3;grid-column:2;align-self:center;font-style:normal;font-weight:800;font-size:.78rem;border-radius:999px;padding:3px 10px;background:#fff}
+.rung em.ok{color:var(--teal)}.rung em.no{color:#b4473a}
+.seg.left{justify-content:flex-start}
+.rule{margin:0;background:#fff;border-left:5px solid #e2708f;border-radius:10px;padding:10px 14px;font-weight:700}
+@media (max-width:760px){.mineboxes{grid-template-columns:1fr}}
+.fta{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:9px 11px;background:#fdfbf8;resize:vertical;margin-top:6px}
+.cbx{display:flex;gap:8px;align-items:flex-start;padding:5px 4px;border-radius:10px;cursor:pointer}
+.cbx input{width:19px;height:19px;flex:none;margin-top:2px;accent-color:#e2708f}
+.cbx small{color:var(--muted);font-weight:400}
+.cbx:has(input:checked){background:rgba(255,255,255,.8)}
+.cbgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}.cbgrid.one{grid-template-columns:1fr}
+.factor .cbx{padding:3px 2px;font-size:.95rem}
+.sugbox{border-radius:16px;padding:10px 12px;background:var(--pink);display:grid;gap:2px}
+.sugbox.e{background:var(--envbg)}.sugbox.t{background:var(--taskbg)}
+.sugbox h4{font-size:1rem;margin-bottom:2px}.sugbox.e h4{color:var(--teal)}.sugbox.t h4{color:var(--rose)}
+.lvl{font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-top:6px}
+.cbx.sug{font-size:.95rem}
+.seg .sl{font-weight:700;font-size:.92rem;align-self:center;margin-right:4px}
+.confirm{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:#fde9e5;border-radius:14px;padding:10px 14px}
+.pnav{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.pnav .btn{width:46px;height:46px;padding:0;font-size:1.4rem}
+.pcard{background:#fff;border:1.5px solid var(--line);border-radius:24px;padding:16px 18px;display:grid;gap:10px}
+.phead{display:flex;align-items:center;gap:12px}.phead img{width:64px}.phead h3{font-size:1.35rem;color:var(--rose)}
+.scene{margin:0;font-size:1.05rem;background:#fff4d9;border-radius:14px;padding:12px 14px}
+.judge{background:#f4f1f3;border-radius:14px;padding:10px 14px;font-family:var(--display);font-weight:600;font-size:1.2rem;color:#6e6a72;}
+.judge small{display:block;font-family:var(--body);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:var(--muted)}
+.pstep{display:flex;gap:10px;align-items:center;margin-top:6px}.pstep b{display:block}.pstep small{color:var(--muted)}
+.reveal summary{cursor:pointer;font-family:var(--display);font-weight:600;color:var(--teal);font-size:1.05rem;padding:6px 0}
+.reveal[open]{display:grid;gap:10px}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
+.pc{position:relative;border:3px solid transparent;border-radius:14px;padding:0;background:#fff;overflow:hidden;box-shadow:0 1px 0 rgba(58,53,80,.08)}
+.pc img{width:100%;aspect-ratio:1;object-fit:contain;background:#fff}
+.pc[aria-pressed="true"]{border-color:#e2708f;box-shadow:0 0 0 3px #fde4ec}
+.lv{position:absolute;top:4px;right:6px;font-style:normal;font-size:.6rem;letter-spacing:1px}.lv.l2{color:#2457c5}.lv.l3{color:#7d58a8}
+.phrase{position:sticky;top:calc(env(safe-area-inset-top,0px) + 60px);z-index:10;background:linear-gradient(120deg,#fde4ec,#fff4d9);border-radius:20px;padding:10px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;box-shadow:0 4px 14px rgba(58,53,80,.08)}
+.pslots{display:flex;align-items:center;gap:6px}.pslots img,.pslots .ph{width:58px;height:58px;border-radius:12px;background:#fff;object-fit:contain}
+.pslots .ph{display:grid;place-items:center;color:#d9c9cf;font-family:var(--display);font-size:1.4rem;border:2px dashed #ecd5dc}
+.arr{color:#c9aab5;font-size:1.3rem}
+.phrase p{margin:0;flex:1;min-width:200px;font-size:1.08rem}
+.sth{display:flex;align-items:center;gap:10px;font-size:1.15rem;margin-top:6px}
+.subtabs{display:flex;gap:6px;background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:4px;width:max-content;max-width:100%;overflow-x:auto}
+.subtabs button{border:none;background:none;border-radius:999px;padding:7px 16px;font-family:var(--display);font-weight:500;color:var(--muted)}
+.subtabs button[aria-pressed="true"]{background:#e2708f;color:#fff}
+.lead2{margin:0;color:var(--muted)}
+.obj{color:var(--gold);font-weight:700}
+.pslots{flex-wrap:wrap}.pslots img{width:50px;height:50px}
+.fgrid{display:grid;gap:12px}
+.fcard{background:var(--bg);border-radius:22px;overflow:hidden}
+.fhead{display:grid;grid-template-columns:1fr 130px 26px;gap:12px;align-items:center;width:100%;text-align:left;border:none;background:none;padding:12px 16px}
+.fhead h3{color:var(--c);font-size:1.15rem}.fhead p{margin:4px 0 0;font-size:.93rem}
+.fhead img{width:130px;max-height:110px;object-fit:contain}
+.chev{font-family:var(--display);font-size:1.6rem;color:var(--c);text-align:center}
+.fbody{padding:0 16px 16px;display:grid;gap:10px}
+.glist{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.gi{background:rgba(255,255,255,.75);border-radius:14px;padding:9px 12px;display:grid;gap:2px}.gi b{color:var(--c);font-family:var(--display);font-weight:600}
+.matlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:8px}
+.mat{display:flex;gap:10px;align-items:center;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:6px 10px;cursor:pointer}
+.mat input{width:20px;height:20px;accent-color:#e2708f;flex:none}
+.mat:has(input:checked){background:#f2f9f5;border-color:#a9d2c3}
+.mimg{display:flex;gap:3px;flex:none}.mimg img{width:46px;height:46px;border-radius:8px;object-fit:contain}
+.mat b{display:block;font-family:var(--display);font-weight:600}.mat small{color:var(--muted)}
+@media (max-width:760px){.fhead{grid-template-columns:1fr 84px 22px}.fhead img{width:84px}.glist{grid-template-columns:1fr}}
+.phrase{flex-direction:column;flex-wrap:nowrap;align-items:stretch;gap:6px;max-height:46vh;overflow-y:auto}
+.pline{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.55);border:2px solid transparent;border-radius:14px;padding:6px 8px;cursor:pointer}
+.pline.act{border-color:#e2708f;background:#fff}
+.pline.veut{cursor:default}
+.pline p{margin:0;flex:1;font-size:1.02rem}
+.pline .x{font-size:1.4rem}
+@media (max-width:600px){.phrase{min-width:0;max-width:100%}.pline{flex-wrap:wrap;position:relative;padding-right:30px}.pline .pslots{flex:1 1 100%;flex-wrap:wrap;min-width:0}.pline p{flex:1 1 100%;min-width:0}.pline .x{position:absolute;top:4px;right:6px}.pslots img,.pslots .ph{width:46px;height:46px}}
+.lvlgrp{display:inline-flex;gap:inherit;align-items:center;flex-wrap:nowrap;margin-left:auto}
+.prow{display:flex;gap:8px;flex-wrap:wrap}
+.phrase .obj{margin:0;font-size:.92rem}
+.hint0{margin:0;color:var(--muted)}
+.wlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:8px}
+.wrow{display:flex;gap:10px;align-items:center;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:6px 10px}
+.wrow img{width:54px;height:54px;object-fit:contain;flex:none;border-radius:8px}.wrow b{display:block;font-family:var(--display);font-weight:600;color:var(--rose)}.wrow span{font-size:.93rem}
+.whint summary{cursor:pointer;color:var(--teal);font-weight:700;font-size:.92rem}.whint p{margin:3px 0 0;font-size:.92rem}
+footer{border-top:1.5px solid var(--line);padding-block:16px 28px}
+footer .wrap{display:flex;gap:12px;align-items:center;flex-wrap:wrap;color:var(--muted);font-weight:600}
+footer img{width:52px}
+
+@media (max-width:760px){
+  .two,.choices,.grid2,.who{grid-template-columns:1fr}
+  .factors{grid-template-columns:1fr 1fr}
+  .mhead{flex-direction:column-reverse;align-items:flex-start}
+  .mhead img{width:150px;align-self:center}
+  .bcat{grid-template-columns:64px 1fr}.bcat img{width:64px;height:72px}
+}
+
+/* Fiches info + Le sensoriel */
+.orb-wrap.sq .orb-ring{border-radius:6px}
+.sqdot{position:absolute;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;background:#e2708f;box-shadow:0 0 0 4px rgba(226,112,143,.25);left:0;top:100%;transition-property:left,top;transition-timing-function:linear;z-index:2}
+.sqdot.c0{left:0;top:100%}.sqdot.c1{left:0;top:0}.sqdot.c2{left:100%;top:0}.sqdot.c3{left:100%;top:100%}
+.custom{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--ink)}.custom input{width:70px;border:1.5px solid var(--line);border-radius:10px;padding:6px 8px;text-align:center;font-weight:700}
+
+.mineboxes{align-items:start}.mbox{align-content:start}
+.ideasbtn{justify-self:start;border:none;background:none;padding:4px 0;font-weight:800;font-size:.92rem;text-decoration:underline;text-underline-offset:3px}
+.mideas{display:grid;gap:8px;background:rgba(255,255,255,.6);border-radius:12px;padding:8px 10px}
+.mig{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:3px}
+.mideas .pick button[aria-pressed="true"]::before{content:"✓"}
+button.orb-wrap{border:none;background:none;padding:0;font:inherit;color:inherit;cursor:pointer}
+
+.start.wide{grid-template-columns:1fr minmax(0,300px) 20px;margin-bottom:0}.start.wide img{width:100%;height:auto;max-height:90px;object-fit:contain}
+.treecard{background:linear-gradient(160deg,#fde4ec,#fff4d9);border-radius:24px;padding:14px 16px 16px;display:grid;gap:6px}
+.tchead b{display:block;font-family:var(--display);font-weight:600;font-size:1.2rem;color:var(--ink)}.tchead small{color:var(--muted);font-size:.92rem}
+.tq0{justify-self:center;background:#fff;border:2px solid #d9cfc7;border-radius:999px;padding:8px 20px;font-family:var(--display);font-weight:600;font-size:1.1rem;margin-top:6px}
+.tconn{position:relative;height:30px;margin:0 25%}
+.tconn::before{content:"";position:absolute;left:50%;top:0;height:12px;border-left:2.5px solid #c9bcc1}
+.tconn span{position:absolute;left:0;right:0;top:12px;height:18px;border:2.5px solid #c9bcc1;border-bottom:none;border-radius:12px 12px 0 0}
+.tbr{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tb{border:2px solid transparent;border-radius:20px;padding:12px;text-align:left;display:grid;gap:4px;align-content:start;background:#fff}
+.tb img{width:110px;height:70px;object-fit:contain}
+.tb.yes{background:#e3f2ec}.tb.no{background:#fde9e5}.tb.yes:hover{border-color:var(--teal)}.tb.no:hover{border-color:#b4473a}
+.tlab{font-family:var(--display);font-weight:600;font-size:1.25rem}.tb.yes .tlab,.tb.yes i{color:var(--teal)}.tb.no .tlab,.tb.no i{color:#b4473a}
+.tb small{color:var(--ink);font-size:.9rem}
+.tb ol{margin:4px 0 0;padding-left:20px;display:grid;gap:2px;font-weight:700;font-size:.95rem}
+.tb i{font-style:normal;font-family:var(--display);font-weight:600;margin-top:4px}
+@media (max-width:520px){.tbr{gap:6px}.tb{padding:10px}.tb img{width:60px;height:42px}.tb ol{padding-left:16px;font-size:.86rem}.tq0{font-size:1rem}}
+
+.tsep{flex:none;align-self:center;font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#c9aab5;padding:0 2px 0 8px;border-left:1.5px solid var(--line);margin-left:2px}
+.sgh{font-size:.8rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#c48aa0;margin:4px 0 -4px}
+.startgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.start{display:grid;grid-template-columns:72px 1fr 20px;gap:12px;align-items:center;text-align:left;border:1.5px solid transparent;background:var(--bg);border-radius:22px;padding:12px 14px}
+.start:hover{border-color:var(--c)}.start img{width:72px;height:60px;object-fit:contain}
+.start b{display:block;font-family:var(--display);font-weight:600;font-size:1.08rem;color:var(--c)}.start small{color:var(--ink);font-size:.92rem}
+.start i{font-style:normal;font-family:var(--display);font-size:1.6rem;color:var(--c)}
+.apropos{background:#fff;border:1.5px solid var(--line);border-radius:20px;padding:10px 16px}.apropos summary{cursor:pointer;font-family:var(--display);font-weight:600;color:var(--teal);font-size:1.05rem;padding:4px 0}.apropos[open]{display:grid;gap:10px}
+.privacy{margin:0;font-size:.9rem;font-weight:700;color:#8a5a0e;background:var(--cream);border-radius:10px;padding:6px 10px}
+footer .disc{flex-basis:100%;font-size:.85rem;font-weight:600}
+@media (max-width:760px){.start.wide{grid-template-columns:1fr 16px}.start.wide img{grid-row:2;grid-column:1/-1;max-height:none}.startgrid{grid-template-columns:1fr}.start{grid-template-columns:56px 1fr 16px}.start img{width:56px;height:48px}}
+
+.dlbox{background:var(--cream);border-radius:20px;padding:14px 16px;display:grid;gap:8px}
+.dlbox h3{font-size:1.1rem;color:var(--rose)}
+.kept ul{margin:0;padding-left:18px;display:grid;gap:3px}.kept li{display:flex;gap:6px;align-items:flex-start;justify-content:space-between}
+.kept .grp{font-weight:800;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;color:var(--gold);margin-top:4px}
+.kept .x,.dlbox .x{border:none;background:none;font-size:1.2rem;color:var(--muted);line-height:1;padding:0 4px}
+.popt summary{cursor:pointer;color:var(--teal);font-weight:700;font-size:.92rem}.popt[open]{display:grid;gap:8px}.popt .who{margin-top:6px}
+.dlbox .msg{align-self:center;color:var(--muted);font-weight:600}
+@media (max-width:760px){.dlbox .who{grid-template-columns:1fr}}
+
+.obn{display:inline-grid;place-items:center;min-width:24px;height:24px;border-radius:999px;background:#e2708f;color:#fff;font-size:.8rem;padding:0 6px;margin-left:4px}
+.obc .cbx{padding:3px 2px;font-size:.93rem}
+#f-sens .obsm{border-style:dashed}
+
+.obsm{background:#fff;border:1.5px solid var(--line);border-radius:20px;padding:10px 16px}
+.obsm summary{cursor:pointer;font-family:var(--display);font-weight:600;color:var(--teal);font-size:1.05rem;padding:4px 0}
+.obsm[open]{display:grid;gap:10px}
+.obsg{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.obc{border-radius:16px;padding:10px 12px}.obc h4{font-size:1rem;margin-bottom:4px}.obc ul{margin:0;padding-left:16px;display:grid;gap:4px;font-size:.93rem}
+.obc.hy{background:#fdf0ee}.obc.hy h4{color:#b4473a}.obc.ho{background:#eef3fc}.obc.ho h4{color:var(--blue)}.obc.re{background:#eaf6f0}.obc.re h4{color:var(--teal)}.obc.au{background:#f4f1f3}.obc.au h4{color:#6e6a72}
+.snc{font-style:normal;font-size:.72rem;font-weight:800;color:var(--muted);background:rgba(255,255,255,.85);border-radius:999px;padding:1px 7px;white-space:nowrap}
+
+.ppick{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.ppick button{border:2.5px solid transparent;background:#fff;border-radius:18px;padding:8px;display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:600;font-size:1rem;color:var(--muted);text-align:left}
+.ppick img{width:52px;flex:none}.rico{width:52px;height:52px;flex:none;border-radius:50%;background:var(--mint);color:var(--teal);display:grid;place-items:center;font-size:1.6rem}
+.ppick .pp-hyper[aria-pressed="true"]{border-color:#e08a7c;color:#b4473a;background:#fdf3f1}.ppick .pp-hypo[aria-pressed="true"]{border-color:#8eaee0;color:var(--blue);background:#f1f5fc}.ppick .pp-rech[aria-pressed="true"]{border-color:#8fc7b1;color:var(--teal);background:#f2f9f5}
+.ogrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.ocard{background:#fff;border:1.5px solid var(--line);border-radius:18px;padding:10px 12px;display:grid;gap:4px;align-content:start}
+.ohd{display:flex;align-items:center;gap:10px}.ohd img{width:44px}.ohd b{font-family:var(--display);font-weight:600;font-size:1.05rem}
+@media (max-width:760px){.ppick{grid-template-columns:1fr}.ppick button{padding:6px 10px}.ppick img,.rico{width:40px;height:40px}.ogrid{grid-template-columns:1fr}}
+
+.subtabs{max-width:calc(100vw - 32px)}
+#view-sensoriel>*,#view-lire>*,.qcard>*,.factors>*,.frow>*,.s8>*,.spick>*,.cmp>*,.grid3>*,.voy>*,.tri>*,.tlist>*{min-width:0}
+.spick span{hyphens:auto;-webkit-hyphens:auto;line-height:1.15}
+.subtabs button{flex:none;white-space:nowrap}
+.factor img{width:60px}
+@media (max-width:520px){.factors{grid-template-columns:1fr}}
+.frow{display:flex;align-items:flex-start;gap:4px}.frow .cbx{flex:1}
+.ibtn{flex:none;width:26px;height:26px;margin-top:3px;border-radius:50%;border:1.5px solid #e2708f;background:#fde4ec;color:#b8324f;font-family:var(--display);font-weight:600;font-size:.9rem;line-height:1;padding:0}
+.ibtn:hover{background:#e2708f;color:#fff}
+.morebtn{justify-self:start;border:none;background:none;padding:2px 0;color:var(--teal);font-weight:800;text-decoration:underline;text-underline-offset:3px}
+dialog#info{border:none;border-radius:24px;padding:0;width:min(720px,calc(100vw - 24px));max-height:calc(100dvh - 32px);background:var(--paper);color:var(--ink);box-shadow:0 20px 60px rgba(58,53,80,.25);overflow:hidden}
+dialog#info[open]{display:flex;flex-direction:column}
+dialog#info::backdrop{background:rgba(58,53,80,.45)}
+.ihead{display:flex;align-items:center;gap:12px;padding:12px 16px;background:linear-gradient(120deg,#fde4ec,#fff4d9);flex:none}
+.ihead img{width:64px;height:52px;object-fit:contain}.ihead h2{flex:1;font-size:1.35rem}
+.ix{border:none;background:#fff;width:40px;height:40px;border-radius:50%;font-size:1.5rem;line-height:1}
+.ibody{padding:14px 16px 20px;overflow-y:auto;display:grid;gap:12px}.ibody>p{margin:0}
+.ih{font-size:1.15rem;color:var(--rose);margin-top:6px}
+.iimg{width:min(360px,100%);justify-self:center}
+.src{margin:6px 0 0;font-size:.82rem;color:var(--muted);font-style:italic}
+.tri{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tcol{border-radius:16px;padding:10px 12px}.tcol h4{font-size:1.05rem}.tcol ul{font-size:.92rem}
+.tcol.lent{background:#e6eefb}.tcol.lent h4{color:#3f63a8}.tcol.moy{background:#e8f4df}.tcol.moy h4{color:#4a7f2a}.tcol.vite{background:#fff4d0}.tcol.vite h4{color:#9a6b12}
+.tq{margin:2px 0 6px;font-style:italic;font-size:.9rem;color:var(--muted)}
+.tlist{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.ti{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:8px 12px;display:grid}.ti b{font-family:var(--display);font-weight:600;color:var(--rose)}.ti span{font-size:.92rem}
+.pimg{display:flex;gap:12px;align-items:center}.pimg img{width:92px;flex:none}.pimg p{margin:0 0 4px}
+.sm{font-size:.92rem;margin:6px 0 0}
+.acc{display:grid;grid-template-columns:110px 1fr;gap:14px;align-items:center}.acc img{width:110px}
+ol.tl{list-style:none;margin:0 0 8px;padding:0;display:grid;gap:4px}
+ol.tl li{background:#fff;border-radius:10px;padding:4px 10px;font-size:.95rem}ol.tl b{color:var(--rose);margin-right:4px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.s8{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.s8c{background:#fdfbf8;border-radius:16px;padding:10px;display:grid;justify-items:center;text-align:center;gap:2px}
+.s8c img{width:78px}.s8c b{font-family:var(--display);font-weight:600;color:var(--ink)}.s8c span{font-size:.88rem;color:var(--muted)}
+.voy{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.vst{position:relative;background:var(--sky);border-radius:16px;padding:10px 12px;display:grid;gap:2px}
+.vst i{font-style:normal;font-family:var(--display);width:28px;height:28px;border-radius:50%;background:#fff;color:var(--blue);display:grid;place-items:center;font-weight:600}
+.vst b{font-family:var(--display);font-weight:600;color:var(--blue)}.vst span{font-size:.92rem}
+.cmp{display:grid;grid-template-columns:90px repeat(3,1fr);gap:8px;align-items:stretch}
+.cmp h4{text-align:center;font-size:1rem;padding:6px;border-radius:12px}
+.cmp .hh{background:#fde9e5;color:#b4473a}.cmp .th{background:#f4f1f3;color:#6e6a72}.cmp .oh{background:var(--sky);color:var(--blue)}
+.cmp .rl{align-self:center;font-family:var(--display);font-weight:600;color:var(--ink)}
+.cc{border-radius:16px;padding:10px;display:grid;justify-items:center;text-align:center;gap:3px;align-content:start}
+.cc img{height:120px;width:auto;object-fit:contain}.cc b{font-family:var(--display);font-weight:600}.cc span{font-size:.88rem}
+.cc.hy{background:#fdf3f1}.cc.ty{background:#f8f6f7}.cc.ho{background:#f1f5fc}
+.spick{display:grid;grid-template-columns:repeat(8,1fr);gap:6px}
+.spick button{border:2.5px solid transparent;background:#fff;border-radius:16px;padding:6px 4px;display:grid;justify-items:center;gap:2px;font-size:.78rem;font-weight:700;color:var(--muted)}
+.spick img{width:54px}.spick button[aria-pressed="true"]{border-color:#e2708f;color:var(--ink);box-shadow:0 0 0 3px #fde4ec}
+.ex{margin:8px 0 0;background:rgba(255,255,255,.7);border-radius:10px;padding:6px 10px;font-style:italic;font-size:.93rem}
+.vase-wrap{display:grid;grid-template-columns:1fr 170px;gap:16px;align-items:end}
+ol.tl2 li{opacity:.45;transition:opacity .3s,transform .3s}ol.tl2 li.on{opacity:1;transform:translateX(4px);box-shadow:0 1px 0 #f0d9a0}ol.tl2 li.last{background:#fde9e5}
+.vbox{position:relative;display:grid;justify-items:center}
+.vase{position:relative;width:120px;height:190px;border:4px solid #9fc3e6;border-top:none;border-radius:0 0 26px 26px;background:rgba(230,238,251,.5);overflow:hidden}
+.water{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(#8cc4f0,#4f97d8);transition:height .6s ease}
+.vase.over{animation:wob .5s ease 2}
+@keyframes wob{25%{transform:rotate(-3deg)}75%{transform:rotate(3deg)}}
+.spill{margin-top:6px;font-family:var(--display);font-weight:600;color:#fff;background:#e2708f;border-radius:999px;padding:4px 14px}
+.keymsg{background:linear-gradient(120deg,#e6eefb,#f1e8fa);border-radius:24px;padding:18px;text-align:center;display:grid;gap:6px}
+.keymsg p{margin:0;color:var(--muted);font-weight:600}.keymsg b{font-family:var(--display);font-weight:600;font-size:1.3rem;color:var(--blue)}
+@media (max-width:760px){.tri,.grid3,.voy{grid-template-columns:1fr}.tlist{grid-template-columns:1fr}.s8{grid-template-columns:1fr 1fr}.spick{grid-template-columns:repeat(4,minmax(0,1fr))}.spick button{font-size:.66rem}.spick img{width:44px}
+ .cmp{grid-template-columns:repeat(3,1fr)}.cmp>div:first-child{display:none}.cmp .rl{grid-column:1/-1;margin-top:4px}.cc img{height:80px}.cc span{font-size:.8rem}
+ .vase-wrap{grid-template-columns:1fr 110px}.vase{width:90px;height:160px}.acc{grid-template-columns:70px 1fr}.acc img{width:70px}.pimg img{width:70px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><div class="hero">
+  <img src="img/coregulation.webp" alt="">
+  <div><h1>Autorégulation au quotidien</h1><p>Des idées concrètes pour votre groupe</p></div>
+</div></div></header>
+
+<nav class="tabs" aria-label="Sections"><div class="wrap"><div class="tabrow" role="tablist">
+  <button class="tab" role="tab" data-view="accueil" id="tab-accueil">Accueil</button>
+  <span class="tsep">Moi d'abord</span>
+  <button class="tab" role="tab" data-view="coherence" id="tab-coherence">Respire</button>
+  <button class="tab" role="tab" data-view="moi" id="tab-moi">Moi, l'adulte</button>
+  <span class="tsep">Avec les enfants</span>
+  <button class="tab" role="tab" data-view="lire" id="tab-lire">Lire la situation</button>
+  <button class="tab" role="tab" data-view="moments" id="tab-moments">Moments de la journée</button>
+  <button class="tab" role="tab" data-view="coreg" id="tab-coreg">Corégulation</button>
+  <button class="tab" role="tab" data-view="sensoriel" id="tab-sensoriel">Le sensoriel</button>
+  <button class="tab" role="tab" data-view="pratique" id="tab-pratique">Je me pratique</button>
+  <button class="tab" role="tab" data-view="sens" id="tab-sens">Mon corps, mes sensations</button>
+</div></div></nav>
+
+<main class="wrap">
+  <section class="view" id="view-accueil"></section>
+  <section class="view" id="view-moments" hidden></section>
+  <section class="view" id="view-lire" hidden></section>
+  <section class="view" id="view-sensoriel" hidden></section>
+  <section class="view" id="view-moi" hidden></section>
+  <section class="view" id="view-coreg" hidden></section>
+  <section class="view" id="view-coherence" hidden></section>
+  <section class="view" id="view-sens" hidden></section>
+  <section class="view" id="view-pratique" hidden></section>
+</main>
+
+<dialog id="info" aria-label="En savoir plus"></dialog>
+<footer><div class="wrap"><img src="img/logo.webp" alt="Logo Valérie Ferron, ergothérapeute"><span>Virginie Clavel et Valérie Ferron, ergothérapeutes</span><span class="disc">Cet outil ne remplace pas une évaluation en ergothérapie. <button class="linkbtn" data-goto="accueil" data-apropos>À propos</button></span></div></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const ul=a=>`<ul class="dots">${a.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`;
+const HEART=`<svg viewBox="0 0 24 24"><path d="M12 20.5C6.5 16.6 3 13.4 3 9.3 3 6.4 5.2 4.2 7.9 4.2c1.7 0 3.2.9 4.1 2.3.9-1.4 2.4-2.3 4.1-2.3 2.7 0 4.9 2.2 4.9 5.1 0 4.1-3.5 7.3-9 11.2z"/></svg>`;
+
+/* ================= Contenu : moments ================= */
+const MOMENTS=[
+ {"id": "sieste", "title": "La sieste", "short": "Se déposer après le dîner", "img": "m-sieste", "c": "#3f63a8", "bg": "#e6eefb", "what": "Après le dîner, le moteur de certains enfants tourne encore trop vite pour déposer : ils bougent, rient, font des bruits de bouche. Le but n'est pas « ne plus bouger », mais aider le corps à ralentir.", "coreg": ["M'asseoir près de son matelas plutôt que répéter « Calme-toi » de loin.", "Chuchoter, lentement : « Ton corps a encore plein d'énergie. On va l'aider à se reposer. »", "Respirer lentement à côté de lui, sans nécessairement lui demander de m'imiter.", "Poser une main ferme et immobile sur son dos, ou le frotter lentement.", "Si ça recommence, sans gronder : « Je suis là. On reste couchés. » ou encore seulement « [Prénom], dodo »."], "env": [["Réduire bruit, lumière, stimulation", ["Tamiser la lumière avant le coucher, fermer les rideaux.", "Musique douce, bruit blanc ou silence.", "Limiter le va-et-vient entre les matelas.", "Ranger les jouets hors de vue."]], ["Ajuster la proximité", ["Éloigner son matelas de celui d'un ami qui le stimule."]], ["Modifier l'espace ou le matériel", ["Toutou ou doudou à serrer.", "Coussin ou petit tapis qui délimite son espace.", "Mâchouille, notamment si les bruits de bouche sont sa façon de se réguler.", "Petit paravent ou bac comme séparation."]], ["Ajuster la proximité", ["Le placer près de l'adulte ou le long d'un mur.", "Lui garder toujours la même place."]], ["Accès au coin calme", ["Placer son matelas dans un coin plus retiré.", "Un coin abrité, comme une petite tente."]]], "task": [["Permettre le mouvement", ["Avant la sieste : étirements, yoga, pousser le mur pendant 10 secondes.", "Pendant la sieste : bercer doucement."]], ["Fractionner les étapes", ["Une routine toujours pareille : toilette, histoire, respiration, puis coucher.", "Une étape calme entre le dîner et la sieste : livres, casse-têtes.", "La routine en pictogrammes."]], ["Réduire les exigences, aider", ["Permettre de se reposer dans différentes positions (assis, couché) sans nécessairement dormir.", "Pression ferme sur le dos, main posée sur l'épaule.", "S'asseoir près de lui les premières minutes."]], ["Accepter d'autres façons", ["Regarder un livre en silence.", "Se lever plus tôt pour un jeu calme s'il ne s'endort pas."]], ["Donner plus de temps", ["Commencer sa routine de détente avant les autres.", "Prévoir un réveil progressif."]], ["Plaisir", ["Une chanson douce ou son histoire préférée.", "Respirer en image : souffler sur une plume, gonfler un ballon dans son ventre."]], ["Donner des responsabilités", ["Donner des responsabilités : fermer les rideaux, distribuer les toutous, éteindre la lumière avec l'adulte, mettre la musique douce."]]], "tip": "Ce n'est pas « ne plus bouger » qu'on vise, mais bouger autrement : du mouvement lent, de la pression, un objet à serrer.", "warn": "Couverture ou lézard lourd : seulement selon le plan d'intervention de l'ergothérapeute, avec le consentement des parents et une surveillance constante (tête et cou dégagés, environ 20 minutes au maximum, l'enfant doit pouvoir s'en dégager seul)."},
+ {"id": "habillage", "title": "L'habillage", "short": "S'habiller pour sortir", "img": "m-habillage", "c": "#7d58a8", "bg": "#f1e8fa", "what": "S'habiller demande beaucoup d'étapes, dans un vestiaire souvent étroit et bruyant, avec l'excitation d'aller dehors. Pour un moteur qui va vite, c'est beaucoup à la fois.", "coreg": ["Aller rejoindre l'enfant plutôt que répéter de loin, et me mettre à sa hauteur.", "La connexion d'abord : « Tu as tellement hâte d'aller dehors! »", "Une demande courte, en lui tendant la botte : « La botte. »", "Garder une voix calme et un rythme lent, même si le groupe est prêt.", "Souligner ce qui est réussi : « Une botte, c'est fait! »"], "env": [["Réduire bruit, lumière, stimulation", ["S'habiller en deux petits groupes plutôt que tous ensemble.", "Baisser le volume au vestiaire.", "Pendant qu'un petit groupe s'habille, les autres attendent avec une chanson ou un livre."]], ["Ajuster la proximité", ["Lui réserver le bout du banc, loin du passage.", "Proximité de l'adulte.", "L'éloigner des amis qui l'excitent.", "Passer en premier ou en dernier."]], ["Modifier l'espace ou le matériel", ["Un banc ou une petite chaise.", "Ses vêtements placés dans l'ordre.", "La séquence en pictogrammes au mur.", "Grosse tirette sur la fermeture éclair, pince à mitaines."]], ["Accès au coin calme", ["Une courte pause, puis reprendre là où il était rendu."]]], "task": [["Permettre le mouvement", ["Avant : pousser le mur, transporter un objet lourd (sac à dos, par exemple).", "Sauter jusqu'à son casier.", "Marcher comme un animal jusqu'au vestiaire."]], ["Fractionner les étapes", ["Une étape à la fois : « Les bottes. »", "Commencer par ce qu'il réussit.", "L'adulte commence, l'enfant termine la dernière étape.", "Cocher les étapes faites sur un tableau."]], ["Réduire les exigences, aider", ["L'aider à enfiler ses bottes les jours plus difficiles.", "Tenir la botte pendant qu'il pousse.", "Faire la fermeture éclair ensemble."]], ["Accepter d'autres façons", ["Changer l'ordre des vêtements pour que ce soit plus facile pour l'enfant.", "Enfiler le manteau par-dessus la tête."]], ["Donner plus de temps", ["Commencer à s'habiller avant les autres.", "Prévoir plus de temps les jours d'habit de neige."]], ["Plaisir", ["Une chanson pour s'habiller.", "Faire semblant qu'on enfile un habit d'astronaute.", "Une course contre le sablier, contre soi-même et pas contre les amis.", "Deviner le prochain vêtement."]], ["Donner des responsabilités", ["Tenir la porte une fois habillé.", "Aider un plus petit.", "Être chef de file pour sortir."]]], "tip": "S'habiller demande beaucoup d'étapes. Soutenir l'enfant dans la réalisation des étapes, une à une, peut faire une réelle différence pour l'aider à rester motivé lors de l'habillage."},
+ {"id": "rangement", "title": "Le rangement", "short": "Arrêter de jouer et ranger", "img": "m-rangement", "c": "#2f7a66", "bg": "#e3f2ec", "what": "Arrêter un jeu qu'on aime, ranger à plusieurs dans le bruit, puis enchaîner avec le lavabo : le rangement est une transition exigeante. Certains enfants s'agitent, d'autres ralentissent et se retirent.", "coreg": ["M'asseoir à côté de l'enfant sur le tapis.", "Nommer avec douceur : « C'est difficile d'arrêter. Tu aimais ta tour. »", "S'il est au ralenti, apporter de l'entrain : « On fait rouler les blocs ensemble? »", "Commencer avec lui : je range un bloc, il en range un.", "« D'abord ranger, ensuite le lavabo. Je reste avec toi. »"], "env": [["Réduire bruit, lumière, stimulation", ["Une chanson de rangement plutôt que des consignes.", "Ranger par petits groupes ou un coin à la fois.", "Éteindre la musique de jeu."]], ["Ajuster la proximité", ["S'asseoir près de lui et ranger à côté de lui.", "Ranger avec un ami calme.", "Lui donner un coin moins achalandé."]], ["Modifier l'espace ou le matériel", ["Bacs identifiés par une image.", "Séquence en pictogrammes : ranger, laver les mains, dîner.", "Minuterie visuelle."]], ["Accès au coin calme", ["Une courte pause au coin calme avant le lavabo, au besoin."]]], "task": [["Permettre le mouvement", ["Porter le bac de blocs jusqu'à l'étagère.", "Ranger en sautant, un bloc à la fois."]], ["Fractionner les étapes", ["« Les blocs rouges d'abord. »", "« Cinq blocs, et c'est fini. »", "« D'abord ranger, ensuite le lavabo. »"]], ["Réduire les exigences, aider", ["Ranger avec lui les jours plus difficiles.", "Faire la première moitié ensemble."]], ["Accepter d'autres façons", ["L'adulte lui tend les blocs.", "C'est lui qui tient le bac pendant que l'adulte range."]], ["Donner plus de temps", ["L'avertir 5 minutes avant, puis 1 minute avant.", "Le laisser finir sa construction.", "Garder la construction sur une étagère jusqu'après le dîner, ou la prendre en photo."]], ["Plaisir", ["Les blocs deviennent des camions qui roulent jusqu'au bac.", "« Qui trouve tous les blocs jaunes? »"]], ["Donner des responsabilités", ["Donner des responsabilités (« chef des blocs ») : vérifier que le bac est plein, sonner la clochette de fin du rangement, vérifier que le tapis est vide."]]], "tip": "Il sait ranger, mais aujourd'hui son état ne le lui permet peut-être pas. L'attente reste la même; c'est le soutien qui augmente."},
+ {"id": "repas", "title": "Les repas et collations", "short": "Manger ensemble", "img": "m-repas", "c": "#c46f2a", "bg": "#fdeedd", "what": "Rester assis, attendre, goûter des textures et des odeurs variées, dans le bruit des ustensiles et des conversations : le repas demande beaucoup au système nerveux.", "coreg": ["M'asseoir à la table plutôt que de circuler debout.", "Garder une ambiance calme : voix posée, peu de consignes à table.", "Devant un aliment refusé : « Tu n'es pas obligé de le manger. Il peut rester dans ton assiette ou dans un petit plat à côté. »"], "env": [["Réduire bruit, lumière, stimulation", ["Musique douce ou silence.", "Manger en plus petits groupes.", "Napperons pour amortir le bruit des ustensiles."]], ["Permettre le mouvement", ["Coussin dynamique (Disc'o'sit, Movin'sit) sur la chaise (s'assurer que les pieds demeurent bien à plat au sol).", "Une bande élastique aux pattes de la chaise pour les pieds."]], ["Ajuster la proximité", ["Une place fixe, au bout de la table ou dos au mur.", "L'éloigner d'un voisin qui le stimule.", "L'adulte assis près de lui."]], ["Modifier l'espace ou le matériel", ["Chaise à sa hauteur, pieds bien appuyés (marchepied ou boîte).", "Ustensiles et verre adaptés.", "Napperon qui délimite son espace.", "Paille, pour la bouche, pour un effet généralement calmant."]], ["Accès au coin calme", ["Une courte pause, puis revenir à table."]]], "task": [["Permettre le mouvement", ["Aider à mettre la table avant de s'asseoir.", "Se lever pour aller porter son assiette à la fin du repas."]], ["Fractionner les étapes", ["Servir de petites portions.", "Se servir soi-même, en petites quantités."]], ["Réduire les exigences, aider", ["Aider à couper ou à ouvrir les contenants.", "Si possible, ne pas exiger de rester assis jusqu'au dernier."]], ["Accepter d'autres façons", ["Toucher ou sentir un nouvel aliment sans le manger.", "Rester debout un moment près de sa chaise.", "Garder l'aliment dans un petit plat à côté de l'assiette."]], ["Donner plus de temps", ["Commencer un peu plus tôt si on sent une pression du temps.", "Annoncer la fin : « Encore cinq minutes. »", "Utiliser une minuterie visuelle au besoin."]], ["Plaisir", ["Une conversation agréable, sans pression autour de la nourriture.", "Nommer les couleurs, les textures, les bruits : « Ça croque! »"]], ["Donner des responsabilités", ["Donner des responsabilités : distribuer les serviettes, les verres, essuyer la table après le repas."]]], "tip": "On ne force pas à goûter. Toucher, sentir ou simplement avoir l'aliment dans son assiette, c'est déjà un pas."},
+ {"id": "causerie", "title": "La causerie", "short": "Écouter en groupe", "img": "m-causerie", "c": "#2f7ea0", "bg": "#e2f1f7", "what": "Rester assis, écouter, attendre son tour, être près des autres : la causerie demande un moteur moyen pendant un bon moment, ce qui est difficile pour plusieurs enfants.", "coreg": ["Chercher son regard ou poser une main sur son épaule plutôt que le nommer devant le groupe.", "Ralentir mon débit et baisser la voix quand le groupe s'excite.", "S'il se tortille : « Tu peux bouger sur ton coussin et écouter en même temps. »", "S'il n'y arrive plus : l'inviter doucement près de moi ou au coin calme, sans punition."], "env": [["Réduire bruit, lumière, stimulation", ["Une voix calme et posée.", "Ranger le matériel qui attire l'attention."]], ["Permettre le mouvement", ["Coussin dynamique (Disc'o'sit, Movin'sit)."]], ["Ajuster la proximité", ["Une place près de l'adulte, loin d'un ami qui le stimule.", "Un carré au sol ou un petit tapis pour délimiter son espace."]], ["Modifier l'espace ou le matériel", ["Permettre de s'asseoir sur une chaise."]], ["Ajuster la proximité", ["S'asseoir en demi-cercle pour que tous voient bien."]], ["Modifier l'espace ou le matériel", ["Un bâton de parole.", "Des supports visuels : images, objets, marionnette."]]], "task": [["Permettre le mouvement", ["Une minute de mouvement avant de s'asseoir : sauts, étirements.", "Une chanson avec gestes entre deux parties."]], ["Fractionner les étapes", ["Une causerie plus courte : 5 à 10 minutes.", "Alterner écoute et mouvement.", "Un sujet à la fois."]], ["Réduire les exigences, aider", ["Ne pas exiger de parler devant tout le groupe.", "Ne pas exiger qu'il regarde l'adulte pour écouter.", "Une main posée sur l'épaule pour l'aider à rester."]], ["Accepter d'autres façons", ["Permettre de répondre en montrant une image ou en levant le pouce.", "Chuchoter sa réponse à l'adulte.", "Écouter couché sur le ventre ou à genoux."]], ["Donner plus de temps", ["Lui annoncer à l'avance son tour de parole."]], ["Plaisir", ["Une marionnette qui pose les questions.", "Un livre interactif.", "Un thème qui l'intéresse, des devinettes."]], ["Donner des responsabilités", ["Lui permettre de tenir le livre ou de tourner les pages.", "Lui permettre de distribuer les images.", "Lui permettre de choisir la chanson."]]], "tip": "Bouger ne veut pas dire ne pas écouter. Certains enfants écoutent mieux quand leur corps peut bouger un peu."},
+ {"id": "transitions", "title": "Les transitions et l'attente", "short": "Passer d'une activité à l'autre", "img": "m-transitions", "c": "#a5700f", "bg": "#fff4d9", "what": "Arrêter une activité, attendre, se déplacer en groupe : les transitions combinent attente, proximité et bruits imprévisibles. Ce n'est pas un moment neutre pour le système nerveux.", "coreg": ["Annoncer de près, pas de l'autre bout du local : « Encore une minute, puis on range. »", "Me placer près de l'enfant qui a le plus de difficulté au moment de la transition.", "Lui tenir la main et marcher lentement avec lui.", "Le fil invisible : rester en lien par le regard, un mot ou un geste avant et pendant tout le déplacement."], "env": [["Réduire bruit, lumière, stimulation", ["Baisser la musique ou la lumière pour annoncer la transition.", "Un signal doux (clochette, chanson) plutôt qu'une voix forte.", "Éviter que tout le groupe attende au même endroit."]], ["Ajuster la proximité", ["Décaler les départs en petits groupes.", "Des marques au sol pour attendre avec de l'espace.", "Premier ou dernier dans la file.", "Tenir la main de l'adulte."]], ["Modifier l'espace ou le matériel", ["Une minuterie visuelle.", "L'horaire de la journée en pictogrammes.", "Des empreintes au sol pour le trajet."]], ["Accès au coin calme", ["Une courte pause au coin calme avant de rejoindre le groupe."]]], "task": [["Permettre le mouvement", ["Se déplacer en imitant un animal.", "Transporter un objet utile pour l'activité suivante.", "Une attente active : pousser le mur, chanson avec gestes, jeu de statue."]], ["Fractionner les étapes", ["Une consigne à la fois.", "« D'abord…, ensuite… »", "Montrer l'image de la prochaine activité ou un objet qui la représente."]], ["Réduire les exigences, aider", ["Faire la première étape avec lui."]], ["Accepter d'autres façons", ["Attendre assis plutôt que debout, ou vice-versa."]], ["Donner plus de temps", ["Laisser finir le tour en cours."]], ["Plaisir", ["Une chanson de transition.", "Un jeu de statue pour arrêter le jeu.", "Un aspect ludique : « On marche comme des souris. »", "Une devinette pendant l'attente."]], ["Donner des responsabilités", ["Donner des responsabilités : sonner la clochette, tourner l'image de l'horaire, être chef de file, fermer la porte."]]], "tip": "Moins on attend, mieux ça se passe. Réduire l'attente, lorsque c'est possible, est souvent une adaptation efficace."},
+ {"id": "jeux", "title": "Les jeux libres", "short": "Jouer avec les autres", "img": "m-jeux", "c": "#b0457f", "bg": "#f9e6f1", "what": "Choisir, partager, négocier, gérer le bruit et le mouvement du groupe : les jeux libres semblent simples, mais ils demandent beaucoup de régulation, surtout quand tout le groupe joue en même temps.", "coreg": ["Rester proche des coins où ça s'agite, avant le conflit.", "Mettre des mots : « Vous voulez tous les deux le camion. C'est difficile. »", "Rejoindre le jeu qui s'emballe pour le ralentir : « On construit plus doucement. »", "Proposer le coin calme avec lui : « Viens, on va se reposer un peu ensemble. »"], "env": [["Réduire bruit, lumière, stimulation", ["Moins de jouets sortis à la fois : faire une rotation des jouets plutôt que tout offrir.", "Des coins de jeu bien délimités.", "Musique de fond éteinte."]], ["Permettre le mouvement", ["Un coin moteur : tapis, gros coussins, tunnel, objets à pousser, tirer, transporter."]], ["Ajuster la proximité", ["Limiter le nombre d'enfants par coin, avec des pictogrammes.", "Un petit tapis comme espace personnel pour jouer.", "Un coin pour jouer seul, à l'écart du passage."]], ["Modifier l'espace ou le matériel", ["Bacs identifiés par une image.", "Jouets en double pour éviter les conflits.", "Jeux de manipulation : pâte à modeler, theraputty, fidgets.", "Un sablier pour les tours de jeu."]], ["Accès au coin calme", ["Coin calme accessible en tout temps : présenté comme un endroit agréable, jamais comme une punition."]]], "task": [["Fractionner les étapes", ["L'aider à choisir entre deux jeux.", "Démarrer le jeu avec lui.", "Proposer une idée de départ : « On construit une tour? »"]], ["Réduire les exigences, aider", ["Accepter le jeu en parallèle plutôt qu'exiger le jeu coopératif.", "Rester près de lui au moment des échanges.", "Mettre des mots sur ce qui se passe : « Il veut aussi le camion. »"]], ["Accepter d'autres façons", ["Permettre d'observer les autres avant de se joindre.", "Permettre de jouer seul un moment.", "Permettre de jouer souvent au même jeu, si ça le rassure."]], ["Donner plus de temps", ["Avertir avant la fin des jeux.", "Laisser finir la construction en cours.", "Annoncer les tours avec un sablier."]], ["Plaisir", ["Suivre son intérêt du moment.", "L'adulte joue avec lui quelques minutes.", "Ajouter un petit défi dans son jeu préféré."]], ["Donner des responsabilités", ["Donner des responsabilités : aider à sortir le matériel, montrer un jeu à un ami."]]], "tip": "Un coin calme toujours accessible, présenté comme un endroit agréable, aide l'enfant à se réguler avant que ça déborde."}
+];
+
+/* ================= Contenu : adulte ================= */
+const BANK=[
+ {t:"Corps et mouvement",img:"a-corps",bg:"#f1e5d8",c:"#8a5a2b",items:["Expirer lentement","Poser les pieds au sol","Relâcher les épaules","Ralentir mes gestes","Scanner mon corps","Faire du sport","Poings serrés puis relâchés","Pression ferme sur les cuisses","Fredonner doucement","Boire lentement","Marcher","Faire des étirements"]},
+ {t:"Environnement",img:"a-env",bg:"#e7f0fa",c:"#3f63a8",items:["Réduire le bruit","Lumière tamisée","Air frais","Fermer une porte","Changer de pièce","Parler à quelqu'un","Mettre de l'ordre autour de moi","Baisser la luminosité","Mettre des coupe-sons","Regarder par la fenêtre","Odeur apaisante"]},
+ {t:"Pensées",img:"a-pensees",bg:"#fdeebb",c:"#9a6b12",items:["Me rappeler mon intention","« Ce n'est pas contre moi »","Il fait de son mieux","Recentrer sur l'essentiel","Me parler comme à un ami","Identifier ce que je contrôle","Reconnaître sans juger","« Dans 10 minutes, ça ira »","Imaginer ma version calme"]},
+ {t:"Prévention",img:"a-prevention",bg:"#d6ebe1",c:"#2f7a66",items:["Pauses régulières","Repas sans écran","Sommeil suffisant","Rituel de fin de journée","Rituel d'arrivée au travail","Dire non","Passe-temps","Identifier mes déclencheurs","Transition maison-travail","Temps pour soi","Activité physique"]}
+];
+const MINE=[
+ {id:"alerte",t:"Mes signaux d'alerte…",s:"Comment je reconnais que je commence à déraper",c:"#b4473a",bg:"#fff0ee"},
+ {id:"feu",t:"Dans le feu de l'action…",s:"Ce que je peux faire en 30 secondes, sans quitter la situation",c:"#b98a0c",bg:"#fff8e8"},
+ {id:"moment",t:"Quand j'ai un moment…",s:"Ce que je fais quand j'ai 2 à 5 minutes pour redescendre",c:"#3f6fb5",bg:"#edf4fc"},
+ {id:"long",t:"Ce qui me ressource à long terme…",s:"Ce qui fait que je pars moins facilement en survie",c:"#6f7a3a",bg:"#f1f5ea"}
+];
+const STATES=[
+ {n:"Détente, repos",d:"moteur lent",bg:"#cfe6ee",ok:1},{n:"Prêt à apprendre, à interagir, attentif",d:"moteur moyen",bg:"#d6efc8",ok:1},{n:"Énergique, prêt à bouger",d:"moteur vite",bg:"#f6f1b3",ok:1},
+ {n:"Surcharge",d:"débordé, désorganisé",bg:"#fbeedd",ok:0},{n:"Action : fuite, combat",d:"rapide, réactif, paniqué",bg:"#f9d4c3",ok:0},{n:"Effondrement",d:"immobile, épuisé, vide",bg:"#efa29d",ok:0}];
+const COREG_AGITE=["Voix douce, rythme ralenti.","J'évite les longues explications.","Je réduis la stimulation autour.","J'offre du mouvement lent ou de la pression ferme.","Nommer l'émotion si l'enfant est suffisamment disponible."];
+const COREG_SURVIE=["Limiter les interventions verbales","Présence calme, peu de stimuli","Attendre que le système redescende"];
+const COREG_TOUJOURS=["Voix calme et ralentie","Proximité, contact physique sécurisant","Rythme ajusté","Respirer ensemble","Silence + connexion avant les mots","Bercer lentement, pressions fermes"];
+const ENVL=["Réduire bruit, lumière, stimulation","Permettre ou réduire le mouvement","Ajuster la proximité physique","Modifier l'espace ou le matériel","Accès au coin calme"];
+const REMIND=k=>{const e=k==="e";return `<div class="remind ${k}"><p class="rk">Rappel de l'aide-mémoire</p><p class="rq">${e?"Quand le contexte n'aide pas":"Quand la demande dépasse les capacités du moment"}</p><div class="rchips">${(e?ENVL:TASKL).map(x=>`<span>${esc(x)}</span>`).join("")}</div></div>`};
+const TASKL=["Fractionner, modifier l'ordre des étapes","Réduire les exigences, aider physiquement","Flexibilité, donner plus ou moins de temps","Plaisir","Donner des responsabilités"];
+const RETENIR=["En mode survie, l'enfant ne choisit pas son état : c'est automatique et involontaire.","L'apprentissage de l'autorégulation n'est pas linéaire : même un enfant compétent a besoin d'aide par moments.","L'adulte fait partie du système : son état influence directement l'enfant.","Aider maintenant n'empêche pas d'apprendre : ça soutient l'autonomie plus tard.","Lire la situation est une compétence, pas une recette."];
+let Q={a:null,b:null};
+const COREG4=[
+ ["Moi d'abord","p-rose",["Prendre une grande respiration avant d'intervenir.","Relâcher les épaules et la mâchoire.","Me rappeler : « Ce n'est pas contre moi, il n'y parvient pas. »","Si je suis à bout : trois respirations, ou passer le relais à une collègue quand c'est possible."]],
+ ["Me rapprocher","p-mint",["Aller vers l'enfant plutôt que répéter de loin.","Me mettre à sa hauteur.","Un contact doux s'il l'accepte : main sur l'épaule ou dans le dos.","Rester près de lui, sans envahir son espace."]],
+ ["Ma voix et mon rythme","p-sky",["Parler plus bas et plus lentement.","Utiliser peu de mots.","Faire des gestes lents.","Faire une pause avant de répéter."]],
+ ["La connexion avant la demande","p-cream",["Nommer ce que je vois : « Ton corps a encore plein d'énergie. »","Valider : « Tu aurais aimé continuer à jouer. »","Faire ensuite la demande, courte : « Les bottes. »","Une seule consigne à la fois."]]
+];
+const PHRASES=["« Je suis là. »","« On le fait ensemble. »","« D'abord…, ensuite… »","« Montre-moi ta botte. »","« Viens, on y va doucement. »","« Je vois que c'est difficile. »"];
+
+/* ================= Favoris ================= */
+let FAV=store.get("aq-fav",[]); // [{m, g, t}]
+const key=(m,g,t)=>m+"|"+g+"|"+t;
+let FKEYS=new Set(FAV.map(f=>key(f.m,f.g,f.t)));
+function toggleFav(m,g,t){const k=key(m,g,t);if(FKEYS.has(k)){FKEYS.delete(k);FAV=FAV.filter(f=>key(f.m,f.g,f.t)!==k)}else{FKEYS.add(k);FAV.push({m,g,t})}store.set("aq-fav",FAV);updBadge();return FKEYS.has(k)}
+function updBadge(){}
+const heartBtn=(m,g,t)=>`<button class="heart" aria-label="Garder cette idée" aria-pressed="${FKEYS.has(key(m,g,t))}" data-m="${esc(m)}" data-g="${esc(g)}" data-t="${esc(t)}">${HEART}</button>`;
+const ideaList=(m,g,items)=>`<ul class="ideas">${items.map(t=>`<li class="idea">${heartBtn(m,g,t)}<span>${esc(t)}</span></li>`).join("")}</ul>`;
+
+/* ================= Vue : moments ================= */
+let curMoment=null;
+function renderMoments(){
+  const v=$("#view-moments");
+  if(!curMoment){
+    v.innerHTML=`<div class="intro"><div class="kicker">Banque d'idées</div><h2>Choisissez un moment de la journée</h2><p>Pour chaque moment : des idées de corégulation, d'environnement et de tâche. Touchez le <b style="color:#e2508a">♥</b> pour garder une idée : elle apparaît en haut du moment, prête à télécharger.</p></div>
+    <div class="mgrid">${MOMENTS.map(m=>{const n=FAV.filter(f=>f.m===m.id).length;return `<button class="mcard" style="--bg:${m.bg};--c:${m.c}" data-open="${m.id}"><img src="img/${m.img}.webp" alt=""><div><h3>${m.title}</h3><span>${m.short}</span>${n?`<div class="count">♥ ${n} idée${n>1?"s":""} gardée${n>1?"s":""}</div>`:""}</div></button>`}).join("")}</div>
+    ${allBox()}
+    <div class="panel p-lilac"><h4>Seule avec 8 enfants?</h4>${ul(["Préparer à l'avance : places fixes, pictogrammes, routines constantes.","Choisir des idées qui aident tout le groupe en même temps.","Commencer la routine quelques minutes plus tôt si on ressent une pression de temps.","Miser sur les responsabilités : un enfant qui aide, c'est un enfant qui participe."])}</div>
+    <div class="tip"><span>💡</span><div><b>Une ou deux idées à la fois.</b> Essayez, observez l'effet, puis ajustez. Si ça n'aide pas, on change ou on retire : c'est de l'ajustement, pas un échec.</div></div>`;
+    return;
+  }
+  const m=MOMENTS.find(x=>x.id===curMoment);
+  const lev=(arr,cls,grp)=>`${REMIND(cls)}<div class="lever ${cls}"><h4>Des exemples pour ce moment</h4>${ideaList(m.id,grp,arr.flatMap(([,items])=>items))}<p class="rinsp">Ces leviers peuvent vous inspirer d'autres idées pour votre groupe.</p></div>`;
+  v.innerHTML=`<button class="back" data-close>‹ Tous les moments</button>
+  <div class="mhead" style="--bg:${m.bg};--c:${m.c}"><div><h2>${m.title}</h2><p><b style="color:${m.c}">Pourquoi c'est exigeant.</b> ${esc(m.what)}</p></div><img src="img/${m.img}.webp" alt=""></div>
+  <div id="kept">${keptBox(m.id)}</div>
+  ${obsMoment(m.id)}
+  <div class="hint">${HEART.replace('<svg','<svg width="16" height="16" style="fill:#f2708f;stroke:#e2507a"')} Touchez le cœur pour garder une idée.</div>
+  <div class="coreg"><h3>💗 La corégulation, concrètement</h3>${ideaList(m.id,"Corégulation",m.coreg)}</div>
+  <div class="two">
+    <div class="col"><div class="colh env">Adapter l'environnement</div>${lev(m.env,"e","Environnement")}</div>
+    <div class="col"><div class="colh task">Adapter la tâche et les attentes</div>${lev(m.task,"t","Tâche et attentes")}</div>
+  </div>
+  ${m.warn?`<div class="warn"><b>Mise en garde.</b> ${esc(m.warn)}</div>`:""}
+  <div class="tip"><span>💡</span><div><b>Le petit truc.</b> ${esc(m.tip)}</div></div>
+  <div class="dlbar"><span style="flex:1">Une situation difficile pendant ce moment?</span><button class="btn" data-fichem="${m.id}">Je remplis une fiche pour ce moment</button></div>
+  `;
+}
+
+/* ================= Vue : lire la situation ================= */
+/* ================= Vue : ma fiche (lire la situation) ================= */
+const FACT=[
+ {k:"enfant",t:"L'enfant",img:"child",items:["Âge et développement","Tempérament","Profil sensoriel","Fatigue","Faim","Émotions"]},
+ {k:"activite",t:"L'activité",img:"clipboard",items:["Nouvelle ou familière?","Simple ou complexe?","Structurée ou non?","Facile ou difficile?","Appréciée ou non?"]},
+ {k:"environnement",t:"L'environnement",img:"env2",items:["Bruit","Lumière","Proximité physique","Organisation de l'espace","Le groupe (agité, excité)"]},
+ {k:"moment",t:"Le moment",img:"moment2",items:["Moment dans la séquence d'activités","Accumulation de la fatigue","Transitions"]}
+];
+const LMAP={
+ "enfant|Âge et développement":["Fractionner les étapes","Réduire les exigences, aider"],
+ "enfant|Tempérament":["Permettre le mouvement","Accepter d'autres façons"],
+ "enfant|Profil sensoriel":["Réduire bruit, lumière, stimulation","Modifier l'espace ou le matériel"],
+ "enfant|Fatigue":["Réduire les exigences, aider","Accès au coin calme"],
+ "enfant|Faim":["Réduire les exigences, aider","Donner plus de temps"],
+ "enfant|Émotions":["Accès au coin calme","Plaisir"],
+ "activite|Nouvelle ou familière?":["Donner plus de temps","Modifier l'espace ou le matériel"],
+ "activite|Simple ou complexe?":["Fractionner les étapes","Réduire les exigences, aider"],
+ "activite|Structurée ou non?":["Modifier l'espace ou le matériel","Fractionner les étapes"],
+ "activite|Facile ou difficile?":["Réduire les exigences, aider","Accepter d'autres façons"],
+ "activite|Appréciée ou non?":["Plaisir","Donner des responsabilités"],
+ "environnement|Bruit":["Réduire bruit, lumière, stimulation"],
+ "environnement|Lumière":["Réduire bruit, lumière, stimulation"],
+ "environnement|Proximité physique":["Ajuster la proximité"],
+ "environnement|Organisation de l'espace":["Modifier l'espace ou le matériel"],
+ "environnement|Le groupe (agité, excité)":["Réduire bruit, lumière, stimulation","Ajuster la proximité"],
+ "moment|Moment dans la séquence d'activités":["Donner plus de temps","Fractionner les étapes"],
+ "moment|Accumulation de la fatigue":["Réduire les exigences, aider","Accès au coin calme"],
+ "moment|Transitions":["Donner plus de temps","Fractionner les étapes"]
+};
+const PENDANT=["Sécurité en priorité","Corégulation","Réduire les stimuli","Retirer si nécessaire"];
+const APRES=["Accueillir l'émotion","Donner du sens","Ajuster pour prévenir la prochaine fois"];
+const SURV=[["fuite","Fuite","se retire, se cache, s'oppose"],["combat","Combat","frappe, crie, mord, s'oppose"],["figement","Figement","regard vide, déconnecté"]];
+const F0={desc:"",moment:"",dispo:"",signes:"",surv:[],pend:[],pendant:"",apr:[],apres:"",fact:[],sensm:[],essaie:"",efficace:"",essaieNote:"",interv:[],intervNote:"",prevenir:"",etat:"",regule:""};
+let FI=Object.assign({},F0,store.get("aq-fiche",{}));FI.fact=(FI.fact||[]).map(k=>k==="moment|Moment dans la séquence"?"moment|Moment dans la séquence d'activités":k).filter(k=>LMAP[k]);FI.sensm=FI.sensm||[];
+const saveF=()=>store.set("aq-fiche",FI);
+const ta=(k,ph,rows=3)=>`<textarea class="fta" data-f="${k}" rows="${rows}" placeholder="${esc(ph||"")}">${esc(FI[k]||"")}</textarea>`;
+const cb=(arr,val,label,sub)=>`<label class="cbx"><input type="checkbox" data-arr="${arr}" value="${esc(val)}" ${FI[arr].includes(val)?"checked":""}><span><b>${esc(label)}</b>${sub?` <small>${esc(sub)}</small>`:""}</span></label>`;
+const SMAP={"H|Auditif":["Réduire bruit, lumière, stimulation","Accès au coin calme"],"H|Vue":["Réduire bruit, lumière, stimulation","Accès au coin calme"],"H|Odorat":["Réduire bruit, lumière, stimulation","Modifier l'espace ou le matériel"],
+ "H|Toucher":["Ajuster la proximité","Modifier l'espace ou le matériel","Accepter d'autres façons"],"H|Oral":["Accepter d'autres façons","Réduire les exigences, aider"],"H|Vestibulaire":["Modifier l'espace ou le matériel","Réduire les exigences, aider"],
+ "B":["Permettre le mouvement","Plaisir"],"R":["Permettre le mouvement","Modifier l'espace ou le matériel"],"A":["Fractionner les étapes","Réduire les exigences, aider","Donner plus de temps"]};
+function sensLevers(){const id=FI.moment;if(!id||!OBSM[id])return[];
+  return [...new Set(OBSM[id].filter(x=>FI.sensm.includes(id+"|"+x[2])).flatMap(([p,s])=>SMAP[p+"|"+s]||SMAP[p]||[]))]}
+function suggestions(){
+  const m=MOMENTS.find(x=>x.id===FI.moment);
+  if(!m)return `<p class="note">Choisissez le moment de la journée (en haut de la fiche) pour voir des idées tirées de la banque.</p>`;
+  const row=(grp,t)=>`<label class="cbx sug"><input type="checkbox" data-arr="interv" value="${esc(grp+" : "+t)}" ${FI.interv.includes(grp+" : "+t)?"checked":""}><span>${esc(t)}</span></label>`;
+  const flat=arr=>arr.flatMap(([,it])=>it);
+  return `${FI.dispo==="non"?"":`<div class="sugbox"><h4 style="color:var(--rose)">💗 Corégulation · ${esc(m.title.toLowerCase())}</h4>${m.coreg.map(t=>row("Corégulation",t)).join("")}</div>`}
+  <div class="grid2"><div class="sugbox e"><h4>Adapter l'environnement</h4>${REMIND("e")}${flat(m.env).map(t=>row("Environnement",t)).join("")}</div><div class="sugbox t"><h4>Adapter la tâche et les attentes</h4>${REMIND("t")}${flat(m.task).map(t=>row("Tâche et attentes",t)).join("")}</div></div>`;
+}
+function renderLire(){
+  const v=$("#view-lire");
+  const oui=FI.dispo==="oui",non=FI.dispo==="non";
+  v.innerHTML=`<div class="intro"><div class="kicker">Ma fiche</div><h2>Lire la situation</h2><p>Remplissez la fiche après une situation vécue. Cochez ce qui s'applique : l'outil vous propose des idées tirées de la banque. Tout reste dans ce navigateur. Toutefois, il est recommandé de ne jamais écrire le nom d'un enfant ou toute information pouvant permettre de l'identifier : utilisez par exemple ses initiales.</p></div>
+  <div class="qcard"><h3>Description de la situation</h3><p class="note" style="margin:0">Qui, quoi, où, quand : décrivez brièvement la scène.</p><p class="privacy">🔒 N'écrivez pas le nom de l'enfant. Utilisez ses initiales, ou « l'enfant ».</p>${ta("desc","Ex. : Au dîner, L. repousse son assiette et se lève…",3)}
+    <div><b style="font-size:.95rem">Le moment de la journée</b><div class="seg left" style="margin-top:6px">${MOMENTS.map(m=>`<button data-fm="${m.id}" aria-pressed="${FI.moment===m.id}">${m.title.replace(/^(Les|La|Le|L')\s?/,"")}</button>`).join("")}</div></div>
+  </div>
+  <div class="qcard"><h3>Je lis la situation : l'enfant est-il disponible?</h3>
+    <div class="choices">
+      <button class="choice yes" data-fd="oui" aria-pressed="${oui}"><div><b>Oui, mais pas ajusté</b><small>Son niveau d'éveil n'est pas ajusté à l'activité.</small></div><img src="img/gauge2.webp" alt=""></button>
+      <button class="choice no" data-fd="non" aria-pressed="${non}"><div><b>Non, mode survie activé</b><small>Le cerveau ne traite plus : surcharge.</small></div><img src="img/surcharge.webp" alt=""></button>
+    </div>
+    <button class="morebtn" data-info="moteur">C'est quoi, le petit moteur?</button>
+    ${oui?`<div><b style="font-size:.95rem">Signes observés</b>${ta("signes","",2)}</div>`:""}
+    ${non?`<div class="cbgrid">${SURV.map(([k,l,s])=>cb("surv",k,l,s)).join("")}</div>`:""}
+  </div>
+  ${non?`
+  <div class="qcard"><h3>Mode survie activé : comment j'interviens</h3>
+    <div class="grid2"><div class="panel p-rose"><h4>Pendant</h4><div class="cbgrid one">${PENDANT.map(x=>cb("pend",x,x)).join("")}</div>${ta("pendant","Ce que j'ai fait…",2)}</div>
+    <div class="panel p-cream"><h4>Après, quand redescendu</h4><div class="cbgrid one">${APRES.map(x=>cb("apr",x,x)).join("")}</div>${ta("apres","Ce que j'ai fait…",2)}</div></div>
+    <p class="rule">En mode survie, l'enfant ne choisit pas son état. Corégulation d'abord, les mots après.</p>
+  </div>`:""}
+  ${FI.dispo?`
+  <div class="qcard"><h3>${non?"Une fois redescendu : ce qui a influencé la régulation":"Je lis ce qui influence la régulation en ce moment"}</h3>
+    <div class="factors">${FACT.map(f=>`<div class="factor"><img src="img/${f.img}.webp" alt=""><h4>${f.t}</h4>${f.items.map(i=>fitem(f.k,i)).join("")}</div>`).join("")}</div>
+    <div id="f-sens">${ficheSens()}</div>
+  </div>`:""}
+  ${non?`
+  <div class="qcard"><h3>Pour prévenir : idées d'adaptation de l'environnement et de la tâche</h3>
+    <p class="note" style="margin:0">Toutes les idées de la banque pour ce moment. Cochez celles que vous voulez essayer.</p>
+    <div id="sugg">${suggestions()}</div>
+    ${ta("intervNote","Mes autres idées…",2)}
+  </div>`:""}
+  ${oui?`
+  <div class="qcard"><h3>L'enfant essaie-t-il de se réguler? La stratégie est-elle efficace?</h3>
+    <p class="note" style="margin:0">Bouger, éviter, toucher, se retirer, parler fort, se balancer…</p>
+    <div class="seg left"><span class="sl">Essaie-t-il?</span><button data-fe="essaie|oui" aria-pressed="${FI.essaie==="oui"}">Oui</button><button data-fe="essaie|non" aria-pressed="${FI.essaie==="non"}">Non</button></div>
+    ${FI.essaie==="oui"?`<div class="seg left"><span class="sl">Efficace pour lui et le groupe?</span><button data-fe="efficace|oui" aria-pressed="${FI.efficace==="oui"}">Oui : je respecte</button><button data-fe="efficace|part" aria-pressed="${FI.efficace==="part"}">Partiellement : j'ajuste</button><button data-fe="efficace|non" aria-pressed="${FI.efficace==="non"}">Non : j'interviens</button></div>`:""}
+    ${ta("essaieNote","Ce que j'observe…",2)}
+  </div>
+  <div class="qcard"><h3>Mes interventions : corégulation, tâche et environnement</h3>
+    ${FI.essaie==="oui"&&FI.efficace==="oui"?`<div class="panel p-mint"><h4>Super! Je patiente et j'observe…</h4><p style="margin:0">Sa stratégie fonctionne : je la respecte. Ma présence calme suffit souvent.</p></div>`:""}
+    <p class="note" style="margin:0">Toutes les idées de la banque pour ce moment. Cochez celles que vous voulez essayer.</p>
+    <div id="sugg">${suggestions()}</div>
+    ${ta("intervNote","Mes autres idées…",2)}
+  </div>`:""}
+  ${FI.dispo?`
+  <div class="qcard"><h3>Comment prévenir une situation semblable</h3>${ta("prevenir","",3)}</div>
+  <div class="qcard me-q"><h3>Et moi, comme adulte</h3><div class="grid2"><div><b style="font-size:.95rem">Mon état au moment de la situation</b>${ta("etat","",2)}</div><div><b style="font-size:.95rem">Comment je me régule d'abord</b>${ta("regule","",2)}</div></div></div>
+  <div class="dlbar"><button class="btn" data-fpdf>Télécharger ma fiche (PDF)</button><button class="btn soft" data-freset>Nouvelle fiche</button><span class="msg" id="f-msg" role="status" style="flex:1"></span></div>`:`<p class="note" style="text-align:center">Choisissez une réponse pour continuer la fiche.</p>`}
+  <div id="f-confirm"></div>`;
+}
+
+/* ================= Vue : corégulation ================= */
+function renderCoreg(){
+  $("#view-coreg").innerHTML=`<div class="intro"><div class="kicker">Corégulation</div><h2>Prêter son calme</h2><p>Ma présence, mon calme, mon rythme. L'adulte prête temporairement son système nerveux à l'enfant. La base de toute intervention, quelle que soit la situation.</p></div>
+  <div class="grid2">${COREG4.map(([t,cl,items])=>`<div class="panel ${cl}"><h4>${t}</h4>${ul(items)}</div>`).join("")}</div>
+  <div class="intro"><h2 style="font-size:1.2rem">Les nuances : selon l'état du système nerveux</h2></div>
+  <div class="grid2"><div class="panel p-rose"><h4>Enfant en mode survie</h4>${ul(COREG_SURVIE)}<p class="rule" style="margin:8px 0 0">La corégulation d'abord, les mots après. Toujours.</p></div>
+    <div class="panel p-sky"><h4>Enfant disponible mais agité (moteur trop vite)</h4>${ul(COREG_AGITE)}</div></div>
+  <div class="panel p-mint"><h4>Enfant disponible mais au ralenti (moteur trop lent)</h4>${ul(["Je garde la douceur, mais j'apporte de l'entrain.","Ma voix est un peu plus animée.","J'invite au mouvement : porter, pousser, rouler.","Je fais avec lui pour initier la tâche."])}</div>
+  <div class="panel p-cream"><h4>Des phrases qui aident</h4><div class="chips">${PHRASES.map(p=>`<span>${esc(p)}</span>`).join("")}</div></div>
+  <div class="panel p-grey"><h4>À éviter</h4>${ul(["Répéter la même consigne de plus en plus fort.","Menacer pour punir.","Expliquer longuement quand l'enfant n'est pas suffisamment disponible.","Comparer avec les autres, ou avec ce qu'on s'attend à ce qu'il soit capable de faire compte tenu de son âge."])}</div>
+  <div class="dlbar"><span style="flex:1">Des exemples concrets de corégulation pour chaque moment de la journée.</span><button class="btn" data-goto="moments">Voir les moments</button></div>`;
+}
+
+/* ================= Vue : moi, l'adulte ================= */
+let NOTES=store.get("aq-notes",{});
+const MBLOC={
+ alerte:[["Dans mon corps",["Mâchoire serrée","Épaules tendues","Cœur qui bat vite","J'ai chaud","Respiration courte"]],["Dans ma voix et mes gestes",["Ma voix monte","Je parle plus vite","Je répète la même consigne","Gestes brusques"]],["Dans ma tête",["Impatience","« Il le fait exprès »","Je ne vois plus que le problème","Envie de fuir"]]],
+ feu:[["Corps et mouvement",["Expirer lentement","Poser les pieds au sol","Relâcher les épaules","Ralentir mes gestes","Poings serrés puis relâchés","Pression ferme sur les cuisses","Fredonner doucement"]],["Pensées",["Me rappeler mon intention","« Ce n'est pas contre moi »","Il fait de son mieux","Reconnaître sans juger","« Dans 10 minutes, ça ira »","Recentrer sur l'essentiel"]]],
+ moment:[["Corps et mouvement",["Boire lentement","Scanner mon corps","Marcher","Faire des étirements","Cohérence cardiaque"]],["Environnement",["Réduire le bruit","Lumière tamisée","Baisser la luminosité","Air frais","Fermer une porte","Regarder par la fenêtre","Changer de pièce","Odeur apaisante","Mettre de l'ordre autour de moi","Mettre des coupe-sons","Parler à quelqu'un"]],["Pensées",["Identifier ce que je contrôle","Me parler comme à un ami","Imaginer ma version calme"]]],
+ long:[["Prévention",["Pauses régulières","Sommeil suffisant","Activité physique","Faire du sport","Repas sans écran","Passe-temps","Temps pour soi","Rituel d'arrivée au travail","Rituel de fin de journée","Transition maison-travail","Identifier mes déclencheurs","Dire non"]]]};
+let MOPEN="";
+const noteLines=id=>(NOTES[id]||"").split("\n").map(s=>s.trim()).filter(Boolean);
+/* migration : anciennes stratégies gardées depuis la banque */
+(()=>{const old=FAV.filter(f=>f.m==="moi");if(!old.length)return;old.forEach(f=>{const b=Object.keys(MBLOC).find(k=>MBLOC[k].some(([,a])=>a.includes(f.t)))||"moment";if(!noteLines(b).includes(f.t))NOTES[b]=[...noteLines(b),f.t].join("\n")});FAV=FAV.filter(f=>f.m!=="moi");store.set("aq-fav",FAV);store.set("aq-notes",NOTES)})();
+function mboxHTML(m){const L=noteLines(m.id),open=MOPEN===m.id;
+  return `<div class="mbox" id="mb-${m.id}" style="border-color:${m.c};background:${m.bg}"><b style="color:${m.c}">${m.t}</b><small>${m.s}</small>
+   <textarea data-note="${m.id}" rows="3" placeholder="${m.id==="alerte"?"Écrivez vos propres signaux, un par ligne…":"Écrivez vos propres stratégies, une par ligne…"}">${esc(NOTES[m.id]||"")}</textarea>
+   <button class="ideasbtn" data-mopen="${m.id}" aria-expanded="${open}" style="color:${m.c}">${open?"Masquer les idées ▴":"Voir des idées à ajouter ▾"}</button>
+   ${open?`<div class="mideas">${MBLOC[m.id].map(([g,arr])=>`<div><div class="mig">${g}</div><div class="pick">${arr.map(t=>`<button data-madd="${m.id}" data-t="${esc(t)}" aria-pressed="${L.includes(t)}">${esc(t)}</button>`).join("")}</div></div>`).join("")}
+    ${m.id==="alerte"?`<p class="sm" style="margin:0">Des exemples pour vous aider à repérer vos propres signaux.</p>`:`<p class="sm" style="margin:0">Tirées de la banque de stratégies de l'aide-mémoire.</p>`}</div>`:""}</div>`}
+function renderMoi(){
+  $("#view-moi").innerHTML=`<div class="intro"><div class="kicker">Moi, l'adulte</div><h2>Mes stratégies d'autorégulation</h2><p>Mon état influence directement celui de l'enfant. Me réguler d'abord, c'est déjà intervenir.</p></div>
+  <div class="intro"><h2 style="font-size:1.25rem">Mes stratégies personnelles</h2><p>Pour chaque bloc, touchez « Voir des idées » pour en ajouter d'un clic, et écrivez aussi les vôtres. Tout s'ajoute à votre PDF, en bas de la page.</p></div>
+  <div class="mineboxes">${MINE.map(mboxHTML).join("")}</div>
+  <label class="mbox wide" style="border-color:#7dbfae;background:#e9f5f0"><b style="color:var(--teal)">Ce que je veux me rappeler dans les moments difficiles…</b><textarea data-note="rappel" rows="2">${esc(NOTES.rappel||"")}</textarea></label>
+  <div class="msg" id="saved" role="status"></div>
+  <div class="tip"><span><img src="img/brain.webp" alt="" style="width:46px"></span><div><b>À retenir :</b> je n'ai pas à être parfaitement calme, j'ai besoin d'être assez régulée pour rester présente. Me réguler, c'est aussi modéliser l'autorégulation pour l'enfant.</div></div>
+  <div id="moi-pdf">${moiBox()}</div>
+  <div class="dlbar"><span style="flex:1">Besoin de redescendre maintenant?</span><button class="btn pink" data-goto="coherence">Respire</button></div>`;
+}
+
+/* ================= Vue : cohérence cardiaque ================= */
+let B={mode:"coh",rhythm:5,sq:4,mins:3,custom:false,running:false,t0:0,raf:0,phaseTimer:0};
+function renderCoh(){const sq=B.mode==="carre";
+  $("#view-coherence").innerHTML=`<div class="intro"><div class="kicker">Pour moi, l'adulte</div><h2>${sq?"La respiration en carré":"La cohérence cardiaque"}</h2><p>${sq?"Quatre temps égaux, comme les quatre côtés d'un carré. Je suis le point : j'inspire en montant, je retiens sur le haut, j'expire en descendant, je retiens sur le bas.":"Respirer lentement, environ 6 respirations par minute. J'inspire pendant que la bulle grossit, j'expire pendant qu'elle rapetisse."}</p></div>
+  <div class="breath">
+    <div class="seg" aria-label="Technique"><button data-bmode="coh" aria-pressed="${!sq}">Cohérence cardiaque</button><button data-bmode="carre" aria-pressed="${sq}">Respiration en carré</button></div>
+    <button class="orb-wrap ${sq?"sq":""}" id="orb-btn" aria-label="Commencer ou arrêter"><div class="orb-ring"></div>${sq?`<div class="sqdot" id="sqdot"></div>`:""}<div class="orb" id="orb"></div><div class="orb-label" id="orb-label">Prête?</div></button>
+    <div class="timer" id="timer"></div>
+    <div class="seg" aria-label="Durée">${[1,3,5].map(n=>`<button data-mins="${n}" aria-pressed="${!B.custom&&B.mins===n}">${n} min</button>`).join("")}<button data-mcustom aria-pressed="${B.custom}">Personnalisé</button></div>
+    ${B.custom?`<label class="custom">Durée : <input type="number" id="b-min" min="1" max="30" value="${B.mins}" inputmode="numeric"> minutes</label>`:""}
+    <div class="seg" aria-label="Rythme">${sq?`<button data-sq="4" aria-pressed="${B.sq===4}">4 s par côté</button><button data-sq="3" aria-pressed="${B.sq===3}">3 s (pour débuter)</button><button data-sq="5" aria-pressed="${B.sq===5}">5 s</button>`:`<button data-rhythm="5" aria-pressed="${B.rhythm===5}">5 s · 5 s</button><button data-rhythm="4" aria-pressed="${B.rhythm===4}">4 s · 4 s (pour débuter)</button>`}</div>
+    <button class="btn" id="breath-go">Commencer</button>
+  </div>
+  ${sq?`<div class="panel p-sky"><h4>Bon à savoir</h4>${ul(["Les temps de rétention se font sans forcer : poumons pleins, puis vides, en restant détendue.","Si retenir est inconfortable, je raccourcis le rythme (3 s) ou je reviens à la cohérence cardiaque.","À intégrer à n'importe quel moment de mon horaire quotidien, ou encore avant ou après un moment exigeant."])}</div>`:`<div class="panel p-sky"><h4>Quand l'utiliser</h4>${ul(["Quelques minutes, à un moment calme de la journée.","Avant un moment que je sais exigeant : l'arrivée, le dîner, la fin de journée.","Après un moment difficile, pour redescendre.","Inspirer par le nez, expirer doucement par la bouche, épaules relâchées."])}</div>`}`;
+}
+/* ================= Vue : je me pratique ================= */
+const CASES=[
+ {t:"L'arrivée",s:"Maya, 3 ans, arrive à 8 h 15. Son père part rapidement. Elle se jette par terre et frappe l'éducatrice qui veut la prendre.",j:"Elle fait une crise.",n:"Maya se jette par terre et frappe l'éducatrice quand son père part.",h:["La séparation est difficile ce matin.","Le départ rapide ne lui a pas laissé le temps de faire la transition de façon confortable.","Être prise dans les bras est trop, à ce moment-là.","Elle est fatiguée ou a faim."]},
+ {t:"La porte du parc",s:"Emma, 4 ans, dit à l'éducatrice remplaçante que « l'autre éducatrice nous laisse toujours sortir en premier ». Quand on lui dit non, elle pleure fort. Elle arrête dès qu'on accepte.",j:"Elle manipule.",n:"Emma pleure fort quand on lui dit non, et arrête quand on accepte.",h:["Le changement d'éducatrice rend la journée moins prévisible.","La routine habituelle la rassure.","Elle n'a pas encore d'autres moyens d'exprimer sa déception.","Elle cherche à répondre à un besoin ou à un désir."]},
+ {t:"Le dîner",s:"Liam, 3 ans, reste debout près de la fenêtre et regarde le camion de vidanges au lieu de s'asseoir. Il est 11 h 50, le local est bruyant, le groupe revient de dehors.",j:"Il refuse d'obéir.",n:"Liam reste debout près de la fenêtre et regarde le camion au lieu de s'asseoir.",h:["Le camion l'intéresse beaucoup.","Son moteur va encore vite au retour de dehors.","Le bruit du local est difficile à tolérer pour lui.","Il a faim ou est fatigué en fin de matinée."]},
+ {t:"Le lavage des mains",s:"Théo, 3 ans, pousse les amis pour passer en premier au lavabo, puis crie quand on lui demande d'attendre. Il est 11 h 45, juste avant le dîner.",j:"Il est agressif.",n:"Théo pousse ses amis et crie quand on lui demande d'attendre.",h:["Il a faim, juste avant le dîner.","Attendre est parfois difficile à 3 ans.","La proximité avec les autres enfants au lavabo est trop grande.","La fatigue s'accumule depuis le matin."]},
+ {t:"Le jeu libre",s:"Arthur, 4 ans, fait tomber la tour de blocs de son ami pour la troisième fois en passant en courant. Il pleut depuis le matin, le groupe n'est pas sorti.",j:"Il fait exprès.",n:"Arthur fait tomber la tour en passant en courant, pour la troisième fois.",h:["Il n'est pas sorti : il a besoin de bouger.","Son moteur va trop vite pour remarquer la tour.","Il n'y a pas suffisamment d'espace pour courir dans le local.","Il veut jouer avec son ami sans savoir comment le faire."]},
+ {t:"Le nouveau bébé",s:"Rosalie, 2 ans et demi, suit l'éducatrice partout et pleure dès qu'elle s'occupe d'un autre enfant. Sa mère a accouché il y a deux semaines.",j:"Elle cherche de l'attention.",n:"Rosalie suit l'éducatrice et pleure quand elle s'occupe d'un autre enfant.",h:["L'arrivée du bébé change beaucoup de choses pour elle.","Elle a besoin de se sentir en sécurité.","Elle cherche une connexion avec l'adulte.","Elle dort peut-être moins bien depuis l'arrivée du bébé."]},
+ {t:"La collation",s:"Félix, 3 ans, crie et pleure parce qu'il a reçu la tasse verte au lieu de la bleue. Une nouvelle éducatrice remplace la sienne cette semaine.",j:"Il est capricieux.",n:"Félix crie et pleure parce qu'il a reçu la tasse verte au lieu de la bleue.",h:["Avec une remplaçante, beaucoup de choses changent.","La tasse bleue fait partie de ce qui le rassure.","Garder le contrôle sur un petit détail l'aide quand le reste change.","La semaine est plus fatigante que d'habitude."]},
+ {t:"Le verre de lait",s:"Samuel, 4 ans, renverse son verre de lait pour la deuxième fois. Il rit et regarde l'éducatrice.",j:"Il le fait pour me provoquer.",n:"Samuel renverse son verre une deuxième fois, rit et regarde l'éducatrice.",h:["Le verre est difficile à manipuler pour lui.","Il rit parce qu'il est gêné ou mal à l'aise.","Il cherche une connexion avec l'adulte.","Son moteur va vite, ses gestes sont moins précis."]},
+ {t:"Le retour de dehors",s:"Noah, 4 ans, refuse d'enlever ses bottes et s'assoit dans le corridor, immobile. Le groupe est déjà rentré, c'est bruyant.",j:"Il ne veut rien savoir.",n:"Noah reste assis, immobile, dans le corridor, ses bottes aux pieds.",h:["Il est en situation de surcharge et fige.","Il est fatigué après les jeux dehors.","Ses bottes sont difficiles à enlever.","Il a besoin de plus de temps pour la transition."]},
+ {t:"La marche au parc",s:"Jade, 5 ans, s'assoit par terre au milieu du trajet et dit qu'elle est trop fatiguée pour marcher. Il fait chaud, et elle est arrivée à 7 h ce matin.",j:"Elle est paresseuse.",n:"Jade s'assoit par terre et dit qu'elle est trop fatiguée pour marcher.",h:["Elle est vraiment fatiguée : sa journée a commencé tôt.","La chaleur l'épuise.","Elle a soif.","Elle a besoin d'une pause."]},
+ {t:"Le bricolage",s:"Zoé, 5 ans, regarde par la fenêtre, son dessin à peine commencé. L'éducatrice a nommé son prénom trois fois. C'est le lundi matin.",j:"Elle est dans la lune.",n:"Zoé regarde encore par la fenêtre, son dessin à peine commencé, même si l'éducatrice a nommé son prénom trois fois.",h:["Le lundi, la transition après la fin de semaine est difficile.","Son moteur est lent ce matin.","L'activité est difficile ou l'intéresse peu.","Quelque chose dehors capte son attention."]},
+ {t:"La causerie",s:"Lily, 5 ans, se roule sur le tapis, touche ses voisins et parle pendant que l'éducatrice explique l'activité. Il est 10 h 30, après le jeu calme.",j:"Elle est tannante.",n:"Lily se roule sur le tapis, touche ses voisins et parle pendant l'explication.",h:["Après le jeu calme, son corps a besoin de bouger.","Elle bouge pour rester éveillée et attentive.","Elle est trop près de ses voisins.","L'explication est longue pour elle."]}
+];
+let PI=0;let PR=store.get("aq-pratique",{});
+function renderPratique(){
+  const c=CASES[PI];const a=PR[PI]||{};
+  $("#view-pratique").innerHTML=`<div class="intro"><div class="kicker">Je me pratique</div><h2>Les lunettes généreuses</h2><p>« Les enfants font bien quand ils le peuvent. » Derrière chaque comportement difficile : un problème à résoudre, une émotion à réguler, un besoin à combler ou une habileté à développer.</p></div>
+  <div class="pnav"><button class="btn soft" data-pi="-1" ${PI===0?"disabled":""}>‹</button><span><b>Situation ${PI+1}</b> sur ${CASES.length}</span><button class="btn soft" data-pi="1" ${PI===CASES.length-1?"disabled":""}>›</button></div>
+  <div class="pcard"><div class="phead"><img src="img/glasses.webp" alt=""><h3>${esc(c.t)}</h3></div>
+    <p class="scene">${esc(c.s)}</p>
+    <div class="judge"><small>À reformuler</small>« ${esc(c.j)} »</div>
+    <label class="pstep"><span class="qnum">1</span><span><b>Je reformule en mots neutres, sans jugement</b><small>Je décris ce que je vois, comme une caméra.</small></span></label>
+    <textarea class="fta" data-pr="n" rows="2">${esc(a.n||"")}</textarea>
+    <label class="pstep"><span class="qnum">2</span><span><b>Je trouve 2 ou 3 hypothèses</b><small>Qu'est-ce qui pourrait expliquer ce comportement?</small></span></label>
+    <textarea class="fta" data-pr="h" rows="3">${esc(a.h||"")}</textarea>
+    <details class="reveal"><summary>Voir des pistes</summary>
+      <div class="panel p-mint"><h4>Une reformulation possible</h4><p style="margin:0">« ${esc(c.n)} »</p></div>
+      <div class="panel p-cream"><h4>Quelques hypothèses possibles</h4>${ul(c.h)}</div>
+      <p class="note">Il n'y a pas une seule bonne réponse : l'important, c'est de changer de lunettes.</p>
+    </details>
+  </div>`;
+}
+function breathStop(label){B.running=false;clearTimeout(B.phaseTimer);cancelAnimationFrame(B.raf);const o=$("#orb");if(o){o.classList.remove("big")}const d=$("#sqdot");if(d){d.style.transitionDuration="0s";d.className="sqdot"}const l=$("#orb-label");if(l)l.textContent=label||"Prête?";const g=$("#breath-go");if(g)g.textContent="Commencer";const t=$("#timer");if(t&&!label)t.textContent=""}
+function breathStart(){
+  B.running=true;B.t0=performance.now();$("#breath-go").textContent="Arrêter";
+  const o=$("#orb"),l=$("#orb-label"),d=$("#sqdot");
+  if(B.mode==="carre"){const s=B.sq;o.style.setProperty("--dur",s+"s");if(d)d.style.transitionDuration=s+"s";
+    const P=[["Inspire…",true,"c1"],["Retiens…",true,"c2"],["Expire…",false,"c3"],["Retiens…",false,"c0"]];if(d){d.style.transitionDuration="0s";d.className="sqdot c0";void d.offsetWidth;d.style.transitionDuration=s+"s"}let i=0;
+    const phase=()=>{if(!B.running)return;const [t,big,c]=P[i];big?o.classList.add("big"):o.classList.remove("big");l.textContent=t;if(d)d.className="sqdot "+c;i=(i+1)%4;B.phaseTimer=setTimeout(phase,s*1000)};phase()}
+  else{o.style.setProperty("--dur",B.rhythm+"s");let inhale=true;
+    const phase=()=>{if(!B.running)return;inhale?o.classList.add("big"):o.classList.remove("big");l.textContent=inhale?"Inspire…":"Expire…";inhale=!inhale;B.phaseTimer=setTimeout(phase,B.rhythm*1000)};phase()}
+  const total=B.mins*60*1000;
+  const tick=()=>{if(!B.running)return;const left=Math.max(0,total-(performance.now()-B.t0));const s=Math.ceil(left/1000);$("#timer").textContent=`${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}`;if(left<=0){breathStop("Bravo!");$("#timer").textContent="Prenez un moment pour remarquer comment vous vous sentez.";return}B.raf=requestAnimationFrame(tick)};
+  tick();
+}
+
+const PL={"emo": [["content", "emo-00.webp", 1], ["triste", "emo-01.webp", 1], ["fâché", "emo-02.webp", 1], ["peur", "emo-03.webp", 1], ["calme", "emo-04.webp", 1], ["surpris", "emo-05.webp", 2], ["dégoûté", "emo-06.webp", 2], ["fier", "emo-07.webp", 2], ["inquiet", "emo-08.webp", 2], ["excité", "emo-09.webp", 2], ["frustré", "emo-10.webp", 2], ["ennuyé", "emo-11.webp", 2], ["gêné", "emo-12.webp", 3], ["déçu", "emo-13.webp", 3], ["jaloux", "emo-14.webp", 3], ["mêlé", "emo-15.webp", 3], ["soulagé", "emo-16.webp", 3], ["affectueux", "emo-17.webp", 3]], "corps": [["tête et cerveau", "corps-00.webp", 1], ["yeux", "corps-01.webp", 1], ["oreilles", "corps-02.webp", 1], ["nez", "corps-03.webp", 1], ["bouche", "corps-04.webp", 1], ["joues", "corps-05.webp", 1], ["gorge", "corps-06.webp", 1], ["voix", "corps-07.webp", 1], ["cœur", "corps-08.webp", 1], ["poumons", "corps-09.webp", 1], ["ventre", "corps-10.webp", 1], ["vessie", "corps-11.webp", 1], ["muscles", "corps-12.webp", 1], ["peau", "corps-13.webp", 1], ["mains et doigts", "corps-14.webp", 1], ["pieds et orteils", "corps-15.webp", 1], ["tout le corps", "corps-16.webp", 1]], "etats": [["faim", "etats-00.webp", 1], ["soif", "etats-01.webp", 1], ["rassasié", "etats-02.webp", 1], ["fatigué", "etats-03.webp", 1], ["envie de pipi", "etats-04.webp", 1], ["envie de caca", "etats-05.webp", 1], ["mal au cœur", "etats-06.webp", 1], ["malade", "etats-07.webp", 1], ["concentré", "etats-08.webp", 1], ["distrait", "etats-09.webp", 1]], "sens": [["chaud", "sens-00.webp", 1], ["froid", "sens-01.webp", 1], ["doux", "sens-02.webp", 1], ["dur", "sens-03.webp", 1], ["lourd", "sens-04.webp", 1], ["léger", "sens-05.webp", 1], ["mou", "sens-06.webp", 1], ["tendu", "sens-07.webp", 1], ["relâché", "sens-08.webp", 1], ["ça va vite", "sens-09.webp", 1], ["ça va lentement", "sens-10.webp", 1], ["ça cogne", "sens-11.webp", 1], ["ça fait mal", "sens-12.webp", 1], ["ça bouge", "sens-13.webp", 1], ["ça tourne", "sens-14.webp", 1], ["ça saute", "sens-15.webp", 1], ["ça gargouille", "sens-16.webp", 1], ["ça glisse", "sens-17.webp", 1], ["sec", "sens-18.webp", 1], ["mouillé", "sens-19.webp", 1], ["ça serre", "sens-20.webp", 2], ["ça se contracte", "sens-21.webp", 2], ["ça pique", "sens-22.webp", 2], ["ça brûle", "sens-23.webp", 2], ["ça gonfle", "sens-24.webp", 2], ["ça se vide", "sens-25.webp", 2], ["agité", "sens-26.webp", 2], ["calme", "sens-27.webp", 2], ["ça vibre", "sens-28.webp", 2], ["ça tremble", "sens-29.webp", 2], ["collant", "sens-30.webp", 2], ["bouché", "sens-31.webp", 2], ["ça gratte", "sens-32.webp", 2], ["ça fourmille", "sens-33.webp", 2], ["ça chatouille", "sens-34.webp", 2], ["ça palpite", "sens-35.webp", 2], ["ça donne le vertige", "sens-36.webp", 2], ["fort", "sens-37.webp", 1], ["faible", "sens-38.webp", 1], ["ça flotte", "sens-39.webp", 3], ["ça oscille", "sens-40.webp", 3], ["immobile", "sens-41.webp", 3], ["régulier", "sens-42.webp", 3], ["irrégulier", "sens-43.webp", 3], ["ça monte", "sens-44.webp", 3], ["ça descend", "sens-45.webp", 3]]};
+const POSS={"tête et cerveau":"ma tête","yeux":"mes yeux","oreilles":"mes oreilles","nez":"mon nez","bouche":"ma bouche","joues":"mes joues","gorge":"ma gorge","voix":"ma voix","cœur":"mon cœur","poumons":"mes poumons","ventre":"mon ventre","vessie":"ma vessie","muscles":"mes muscles","peau":"ma peau","mains et doigts":"mes mains","pieds et orteils":"mes pieds","tout le corps":"tout mon corps"};
+const MAT=[
+ [1,["chaud"],"Sac magique chauffé"],[1,["froid"],"Glaçon dans un sac fermé"],[1,["doux"],"Ouate (ressemble à un nuage)"],[1,["dur"],"Galet"],[1,["lourd"],"Petit kettlebell ou haltère jouet"],
+ [1,["léger"],"Pissenlit en saison, sinon une graine de pissenlit séchée sous plastique"],[1,["mou"],"Éponge"],[1,["tendu","relâché"],"Gros élastique"],[1,["ça va vite"],"Petite auto de course jouet"],
+ [1,["ça va lentement"],"Petit tracteur jouet"],[1,["ça cogne"],"Petit tambour"],[1,["ça fait mal"],"Pansements"],[1,["ça bouge"],"Jell-O dans un contenant"],[1,["ça tourne"],"Toupie"],
+ [1,["ça saute"],"Balle rebondissante"],[1,["ça gargouille"],"Paille et verre d'eau pour faire des bulles"],[1,["ça glisse"],"Savon mouillé"],[1,["sec"],"Morceau d'argile séchée"],[1,["mouillé"],"Vaporisateur d'eau"],
+ [2,["ça serre"],"Petit serre-joint en plastique"],[2,["ça se contracte"],"Ressort (Slinky)"],[2,["ça pique"],"Balle à picots (plus sécuritaire qu'un cactus)"],[2,["ça brûle"],"Aucun objet, pour la sécurité : la carte suffit"],
+ [2,["ça gonfle","ça se vide"],"Ballon"],[2,["agité"],"Boule de laine emmêlée"],[2,["calme"],"Bac d'eau"],[2,["ça vibre"],"Diapason"],[2,["ça tremble"],"Feuille (vraie ou en tissu)"],
+ [2,["collant"],"Petit pot de miel ou de slime"],[2,["bouché"],"Petite bouteille avec bouchon de liège"],[2,["ça gratte"],"Papier sablé"],[2,["ça fourmille"],"Bonbons pétillants : ça fourmille dans la bouche!"],
+ [2,["ça chatouille"],"Plume"],[2,["ça palpite"],"Stéthoscope jouet"],[2,["ça donne le vertige"],"Bouteille tourbillon"],[1,["fort","faible"],"Petites figurines ou peluches (lion et souris)"],
+ [3,["ça flotte"],"Bateau en papier et bac d'eau"],[3,["ça oscille"],"Petite balançoire à bascule jouet"],[3,["immobile"],"Petite ancre jouet ou petite statue"],[3,["régulier","irrégulier"],"Ruban à agiter doucement ou en saccades"],[3,["ça monte","ça descend"],"Petit escalier en blocs"]
+];
+const MATOF=n=>{const m=MAT.find(x=>x[1].includes(n));return m?m[2]:""};
+const SAFE=["Ballons : risque d'étouffement et allergie au latex. Seulement avec l'adulte.","Petits objets (galet, bouchon, élastique, figurines) : à éviter avec les plus petits, ou sous supervision.","Glaçon et sac magique : vérifier la température et limiter le temps de contact.","Bonbons pétillants : pas avant 4 ou 5 ans, et toujours avec l'adulte.","Pas de vraie flamme ni de vrai cactus : la carte suffit."];
+const FACONS=[
+ {id:"bien",t:"S'assurer que l'enfant se sente bien",img:"f-bien",bg:"#efe6fb",c:"#6b4fa0",lead:"Un enfant qui se sent en sécurité peut porter attention à son corps.",
+  ideas:["Choisir un moment calme, jamais en pleine désorganisation.","Garder une ambiance de jeu : on explore, on ne teste pas.","L'enfant peut dire non ou arrêter : on revient plus tard.","Commencer à côté de lui, à sa hauteur, avec un ton léger."]},
+ {id:"concepts",t:"Enseigner les concepts à travers le jeu",img:"f-concepts",bg:"#fde8ea",c:"#b8324f",lead:"D'abord le concept avec un objet (exemple : le papier sablé). Ensuite le lien avec le corps, à l'extérieur (exemple : toucher des parties du corps avec le papier sablé). Lorsque c'est applicable, on peut aussi faire le lien avec le corps à l'intérieur (exemple : « Ça gratte comme le papier sablé. Est-ce que ta gorge te gratte comme ça quand tu as le rhume? »)",gh:"Idées pour introduire les concepts :",
+  groups:[["Lourd et léger","Porter un sac lourd, puis une plume. « Lequel est le plus lourd? » Jouer aux déménageurs."],["Chaud et froid","Toucher le sac magique chauffé, puis le glaçon dans un sac."],["Doux, dur et mou","Le sac mystère : ouate, galet, éponge. Deviner sans regarder, puis trouver la carte qui va avec."],["Tendu et relâché","Étirer un gros élastique, puis le relâcher. Serrer les poings très fort… et relâcher."],["Vite et lentement","Faire rouler l'auto de course et le tracteur. Courir comme l'auto, marcher comme le tracteur."],["Sec et mouillé","Toucher l'argile séchée, puis vaporiser un peu d'eau. « Ta bouche est sèche quand tu as soif? »"],["Ça glisse et collant","Le savon mouillé qui glisse, le slime qui colle aux doigts."],["Fort et faible","La voix du lion, la voix de la souris. Pousser fort sur le mur, puis tout doucement."],["Ça gonfle et ça se vide","Un ballon, avec l'adulte. Puis le ventre qui gonfle quand on inspire et qui se vide quand on expire."]]},
+ {id:"exterieur",t:"Commencer par l'extérieur, puis l'intérieur",img:"f-exterieur",bg:"#fff4d6",c:"#9a6b12",lead:"Les sensations sur la peau sont plus faciles à remarquer que celles à l'intérieur du corps.",
+  ideas:["1. Dehors, sur le corps : les mains chaudes ou froides, les joues après dehors, les pieds mouillés.","2. Puis dedans : le cœur qui cogne, la respiration qui va vite ou lentement.","3. Puis les signaux intéroceptifs : la faim, la soif, l'envie de pipi, la fatigue.","Une question à la fois : « Tes mains sont comment? Et ton cœur? »"]},
+ {id:"vivre",t:"Le faire vivre",img:"f-vivre",bg:"#e3f1fb",c:"#2f6fa8",lead:"On fait bouger le corps, puis on s'arrête pour remarquer ce qui a changé à l'intérieur.",
+  groups:[["Le cœur qui cogne","Sauter 30 secondes, puis mettre la main sur le cœur : « Qu'est-ce que tu sens? »"],["Le cœur qui ralentit","Après avoir couru, se coucher sur le dos et écouter : « Ton cœur va encore vite? »"],["La respiration","Faire des bulles avec une paille, souffler sur une plume : le ventre gonfle, puis se vide."],["Tendu et relâché","Faire le robot tout raide, puis la poupée de chiffon toute molle."],["Bouger et immobile","Danser, puis faire la statue : « Qu'est-ce qui bouge encore dans ton corps? »"],["Lourd et léger","Marcher comme un éléphant lourd, puis comme une plume légère."],["Froid dedans","Boire une gorgée d'eau froide : « Où sens-tu le froid? »"],["Faim et rassasié","Avant le dîner : « Est-ce que ton ventre gargouille? » Après : « Ton ventre est plein? »"],["Ça tourne","Tourner doucement sur soi, puis s'arrêter : « Ça tourne encore dans ta tête? »"]]},
+ {id:"propre",t:"Parler de son propre corps",img:"f-propre",bg:"#fdeee8",c:"#c0584a",lead:"L'enfant apprend en entendant l'adulte nommer ses sensations, et ce qu'il fait pour se sentir mieux.",
+  ideas:["« Mon ventre gargouille, je pense que j'ai faim. »","« J'ai chaud, je vais enlever ma veste. »","« Mes épaules sont toutes tendues. Je vais prendre une grande respiration. »","« Mon cœur cogne fort, j'ai eu peur quand le bruit est arrivé. »","Avec un personnage d'histoire : « Comment son corps se sent-il, d'après toi? »"]},
+ {id:"cartes",t:"Utiliser les cartes",img:"f-cartes",bg:"#e8f4e6",c:"#3f8a4f",lead:"Une partie du corps + une sensation : « ventre » + « ça gargouille ». On peut ajouter plus d'une sensation.",
+  ideas:["Au retour de dehors, avant le dîner, après la sieste : des moments naturels pour nommer.","L'enfant choisit les cartes; l'adulte formule sans corriger.","Commencer avec le niveau ● et peu de cartes, puis en ajouter au besoin.","Utiliser l'outil « Explorer » de cet onglet sur la tablette."],go:true},
+ {id:"curieux",t:"Être curieux, sans corriger",img:"glasses",bg:"#f4eefb",c:"#7d58a8",lead:"Il nomme une réponse étonnante? On accueille : « Ah oui? Raconte-moi. »",
+  ideas:["Il n'y a pas de mauvaise réponse : chaque corps ressent à sa façon.","Poser une autre question plutôt que corriger : « Où ça, dans ton ventre? »","Toujours dans le plaisir."]}
+];
+const WHERE={"chaud":"Joues, ventre, tout le corps : fièvre, après avoir couru, colère, gêne","froid":"Mains, pieds, frissons dans le dos, ventre quand on a peur","doux":"Respiration douce, ventre tranquille, après un câlin","dur":"Ventre dur (constipation, trop mangé), muscles, boule dans la gorge","lourd":"Paupières, bras et jambes (fatigue), ventre après un gros repas, poitrine (tristesse)","léger":"Tête, tout le corps quand on rit ou qu'on est content","mou":"Jambes molles (peur, fatigue), muscles relâchés","tendu":"Épaules, mâchoire, ventre, poings serrés","relâché":"Épaules, mâchoire, ventre après une respiration","ça va vite":"Cœur, respiration","ça va lentement":"Respiration et cœur au repos, quand on s'endort","ça cogne":"Cœur après une course ou une peur, tête (mal de tête)","ça fait mal":"Ventre, tête, gorge, oreilles, dents","ça bouge":"Ventre (papillons), jambes qui ne tiennent pas en place","ça tourne":"Tête (étourdi), ventre (mal au cœur)","ça saute":"Cœur (sursaut), ventre (hoquet), un muscle qui saute","ça gargouille":"Ventre (faim, digestion)","ça glisse":"Gorge quand on avale, la nourriture qui descend dans le ventre","sec":"Bouche, gorge (soif), yeux","mouillé":"Bouche (salive), yeux (larmes), sueur, nez qui coule",
+"ça serre":"Gorge (boule), poitrine, ventre (peur), tête","ça se contracte":"Muscles, ventre (crampe), vessie","ça pique":"Gorge, yeux, nez (avant d'éternuer)","ça brûle":"Estomac, gorge, yeux, muscles après l'effort","ça gonfle":"Ventre (gaz, trop mangé), poitrine quand on inspire, vessie pleine","ça se vide":"Poumons quand on expire, ventre après les toilettes, énergie qui part","agité":"Ventre, tête (pensées qui tournent), jambes","calme":"Respiration, cœur, ventre","ça vibre":"Gorge et poitrine quand on fredonne ou qu'on crie, tout le corps après un gros bruit","ça tremble":"Mains, jambes, mâchoire, voix (froid, peur)","collant":"Bouche pâteuse, gorge, nez (rhume)","bouché":"Nez, oreilles (en avion), gorge","ça gratte":"Gorge, nez, yeux","ça fourmille":"Bras, jambes, mains, pieds (engourdis)","ça chatouille":"Gorge (avant de tousser), nez (avant d'éternuer), ventre (papillons)","ça palpite":"Cœur, poitrine (peur, excitation, après l'effort)","ça donne le vertige":"Tête, ventre","fort":"Toute sensation intense : cœur qui bat fort, grosse faim, grosse envie de pipi, gros mal","faible":"Toute sensation légère : petite faim, petit mal, jambes faibles",
+"ça flotte":"Tête (dans la lune), tout le corps quand on est détendu, ventre (manège)","ça oscille":"Ventre, tête (équilibre), respiration qui va et vient","immobile":"Corps calme, ventre tranquille, corps figé de peur","régulier":"Respiration, cœur au repos","irrégulier":"Respiration après avoir pleuré, hoquet, cœur lors d'un choc, crampes","ça monte":"Chaleur au visage (colère, gêne), mal au cœur, larmes qui montent, inspiration","ça descend":"Nourriture qui descend, calme qui revient, énergie qui baisse, expiration"};
+let SX={sub:"explorer",mode:"enfant",lvl:3,lines:[],act:-1,veut:[],open:""};
+let MATCK=store.get("aq-mat",[]);
+const listFr=a=>a.length<2?a.join(""):a.slice(0,-1).join(", ")+" et "+a[a.length-1];
+const curLine=()=>SX.lines[SX.act];
+function lineText(L){let p=L.corps?`Dans <b>${esc(POSS[L.corps]||L.corps)}</b>`:"";if(L.sens.length)p+=`${p?", je sens : ":"Je sens : "}<b>${esc(listFr(L.sens))}</b>`;else if(p)p+=`… <span class="note">qu'est-ce que je sens?</span>`;return p+(L.sens.length?".":"")}
+function sensLines(){
+  if(!SX.lines.length&&!SX.veut.length)return `<p class="hint0">${SX.mode==="moi"?"Touchez une partie du corps, puis ce que vous y sentez. Vous pouvez ajouter d'autres parties du corps : chacune aura sa ligne.":"L'enfant touche une partie du corps, puis ce qu'il y sent. Chaque partie du corps a sa ligne."}</p>`;
+  const img=(list,n)=>{const it=list.find(x=>x[0]===n);return it?`<img src="img/p/${it[1]}" alt="">`:""};
+  return SX.lines.map((L,k)=>`<div class="pline${k===SX.act?" act":""}" data-line="${k}"><div class="pslots">${L.corps?img(PL.corps,L.corps):`<span class="ph">?</span>`}<span class="arr">›</span>${L.sens.length?L.sens.map(n=>img(PL.sens,n)).join(""):`<span class="ph">?</span>`}</div><p>${lineText(L)}</p><button class="x" data-delline="${k}" aria-label="Retirer cette ligne">×</button></div>`).join("")
+   +(SX.veut.length?`<div class="pline veut"><div class="pslots">${SX.veut.map(n=>img([...PL.etats,...PL.emo],n)).join("")}</div><p>Ça veut peut-être dire : <b>${esc(listFr(SX.veut))}</b>.</p></div>`:"");
+}
+function pgrid(list,field){
+  return `<div class="pgrid">${list.filter(x=>x[2]<=SX.lvl).map(([n,f,l])=>`<button class="pc" data-sx="${field}" data-v="${esc(n)}" aria-pressed="${field==="corps"?SX.lines.some(L=>L.corps===n):field==="sens"?!!(curLine()&&curLine().sens.includes(n)):SX.veut.includes(n)}" aria-label="${esc(n)}"><img src="img/p/${f}" alt="" loading="lazy">${l>1?`<i class="lv l${l}">${"●".repeat(l)}</i>`:""}</button>`).join("")}</div>`;
+}
+function slot(field,list){const it=SX[field].map(n=>list.find(x=>x[0]===n)).filter(Boolean);return it.length?it.map(i=>`<img src="img/p/${i[1]}" alt="">`).join(""):`<span class="ph">?</span>`}
+function renderSens(){
+  const sub=SX.sub,moi=SX.mode==="moi";
+  let h=`<div class="intro"><div class="kicker">Les sensations du corps</div><h2>${sub==="explorer"?(moi?"Qu'est-ce que je ressens dans mon corps?":"Explorer les sensations avec l'enfant"):sub==="faire"?"Comment faire avec les enfants":sub==="ou"?"Où se ressentent les sensations?":"Idées de matériel pour les cartes"}</h2></div>
+  <div class="subtabs">${[["explorer","Explorer"],["ou","Où ça se ressent"],["faire","Comment faire"],["materiel","Matériel"]].map(([k,t])=>`<button data-sxsub="${k}" aria-pressed="${sub===k}">${t}</button>`).join("")}</div>`;
+  if(sub==="explorer"){
+    const allSens=SX.lines.flatMap(L=>L.sens);const objs=!moi?[...new Set(allSens.map(MATOF).filter(x=>x&&!x.startsWith("Aucun")))]:[];
+    h+=`<p class="lead2">${moi?"Avant de lire l'enfant, je me lis moi-même. Nommer ce que je ressens m'aide déjà à me réguler.":"Une partie du corps, puis une ou plusieurs sensations, puis ce que ça veut peut-être dire. Toujours dans le plaisir, sans corriger."}</p>
+    <div class="seg left"><button data-sxmode="enfant" aria-pressed="${!moi}">Avec l'enfant</button><button data-sxmode="moi" aria-pressed="${moi}">Pour moi</button>
+      <span class="lvlgrp"><span class="sl">Niveau</span>${[1,2,3].map(l=>`<button data-sxlvl="${l}" aria-pressed="${SX.lvl===l}" title="${["Découvrir","Explorer","Approfondir"][l-1]}">${"●".repeat(l)}</button>`).join("")}</span></div>
+    <div class="phrase">${sensLines()}${objs.length?`<p class="obj">Pour jouer : ${esc(objs.join(" · "))}</p>`:""}${curLine()&&curLine().sens.length?`<details class="whint"><summary>Où ça peut se ressentir (exemples)?</summary>${curLine().sens.map(n=>`<p><b>${esc(n)}</b> : ${esc(WHERE[n]||"")}</p>`).join("")}</details>`:""}${SX.lines.length||SX.veut.length?`<div class="prow"><button class="btn soft" data-addline>+ Une autre partie du corps</button><button class="btn soft" data-sxreset>Recommencer</button></div>`:""}</div>
+    ${moi&&(allSens.length||SX.veut.length)?`<div class="dlbar"><span style="flex:1">Je l'ai remarqué. Qu'est-ce qui m'aiderait maintenant?</span><button class="btn pink" data-goto="coherence">Respirer</button><button class="btn soft" data-goto="moi">Mes stratégies</button></div>`:""}
+    <h3 class="sth"><span class="qnum">1</span>Où, dans mon corps?</h3>${pgrid(PL.corps,"corps")}
+    <h3 class="sth"><span class="qnum">2</span>Qu'est-ce que je sens${curLine()&&curLine().corps?" dans "+esc(POSS[curLine().corps]||curLine().corps):""}?</h3>${pgrid(PL.sens,"sens")}
+    <h3 class="sth"><span class="qnum">3</span>Ça veut peut-être dire…</h3><p class="note" style="margin:-6px 0 0">Les états de base</p>${pgrid(PL.etats,"veut")}<p class="note" style="margin:4px 0 0">Les émotions</p>${pgrid(PL.emo,"veut")}`;
+  } else if(sub==="ou"){
+    h+=`<p class="lead2">Aide-mémoire pour l'adulte : où chaque sensation peut se ressentir dans le corps, avec des exemples vécus par les enfants. À combiner avec les cartes des parties du corps.</p>
+    ${[1,2,3].map(l=>`<h3 class="sth">${["Niveau 1 · Découvrir","Niveau 2 · Explorer","Niveau 3 · Approfondir"][l-1]} <small class="note">${["Les signaux forts et fréquents","Les signaux plus fins","Les signaux subtils et les nuances"][l-1]}</small></h3>
+    <div class="wlist">${PL.sens.filter(x=>x[2]===l).map(([n,f])=>`<div class="wrow"><img src="img/p/${f}" alt=""><div><b>${esc(n)}</b><span>${esc(WHERE[n]||"")}</span></div></div>`).join("")}</div>`).join("")}`;
+  } else if(sub==="faire"){
+    h+=`<p class="lead2">Touchez une carte pour voir des idées.</p><div class="fgrid">${FACONS.map(f=>`<div class="fcard${SX.open===f.id?" open":""}" style="--bg:${f.bg};--c:${f.c}"><button class="fhead" data-fopen="${f.id}" aria-expanded="${SX.open===f.id}"><div><h3>${f.t}</h3><p>${esc(f.lead)}</p></div><img src="img/${f.img}.webp" alt=""><span class="chev">${SX.open===f.id?"–":"+"}</span></button>
+      ${SX.open===f.id?`<div class="fbody">${f.gh?`<p class="sm" style="margin:0"><b>${esc(f.gh)}</b></p>`:""}${f.groups?`<div class="glist">${f.groups.map(([a,b])=>`<div class="gi"><b>${esc(a)}</b><span>${esc(b)}</span></div>`).join("")}</div>`:ul(f.ideas)}
+      ${f.id==="concepts"?`<button class="btn soft" data-sxsub="materiel">Voir la liste de matériel</button>`:""}${f.go?`<button class="btn soft" data-sxsub="explorer">Ouvrir Explorer</button>`:""}</div>`:""}</div>`).join("")}</div>`;
+  } else {
+    const n=MAT.filter(m=>MATCK.includes(m[2])).length;
+    h+=`<p class="lead2">Un objet pour chaque carte de sensation : l'enfant touche l'objet, puis l'adulte fait le lien avec l'intérieur du corps. Cochez ce que vous avez déjà.</p>
+    <div class="dlbar"><span style="flex:1"><b>${n}</b> sur ${MAT.length} objets</span></div>
+    ${[1,2,3].map(l=>`<h3 class="sth">${["Niveau 1 · Découvrir","Niveau 2 · Explorer","Niveau 3 · Approfondir"][l-1]} <span class="lv l${l}" style="position:static;font-size:.8rem">${"●".repeat(l)}</span></h3>
+      <div class="matlist">${MAT.filter(m=>m[0]===l).map(m=>{const imgs=m[1].map(c=>PL.sens.find(x=>x[0]===c)).filter(Boolean);return `<label class="mat"><input type="checkbox" data-mat="${esc(m[2])}" ${MATCK.includes(m[2])?"checked":""}><span class="mimg">${imgs.map(i=>`<img src="img/p/${i[1]}" alt="">`).join("")}</span><span><b>${esc(m[1].join(" / "))}</b><small>${esc(m[2])}</small></span></label>`}).join("")}</div>`).join("")}
+    <div class="warn"><b>Sécurité, surtout avec les 0 à 5 ans</b>${ul(SAFE)}</div>`;
+  }
+  $("#view-sens").innerHTML=h;
+}
+
+/* ================= Vue : mes idées ================= */
+let PROF=store.get("aq-prof",{name:"",group:"",lines:true});
+function groups(){
+  const out=[];
+  MOMENTS.forEach(m=>{const f=FAV.filter(x=>x.m===m.id);if(f.length)out.push({id:m.id,title:m.title,img:m.img,c:m.c,bg:m.bg,items:f})});
+  const p=[...MINE.map(m=>({m:"perso",g:m.t.replace("…",""),t:(NOTES[m.id]||"").trim()})),{m:"perso",g:"Ce que je veux me rappeler",t:(NOTES.rappel||"").trim()}].filter(x=>x.t);
+  const a=FAV.filter(x=>x.m==="moi");
+  if(p.length||a.length)out.push({id:"moi",title:"Mes stratégies d'autorégulation",img:"a-corps",c:"#b8324f",bg:"#fde4ec",items:[...p,...a]});
+  return out;
+}
+const pdfOpts=()=>`<details class="popt"><summary>Options du PDF</summary><div class="who"><label>Mon prénom<input data-prof="name" value="${esc(PROF.name)}" placeholder="Ex. : Julie" autocomplete="off"></label><label>Mon groupe<input data-prof="group" value="${esc(PROF.group)}" placeholder="Ex. : Les Coccinelles" autocomplete="off"></label></div><label class="opt"><input type="checkbox" data-prof="lines" ${PROF.lines?"checked":""}> Ajouter des lignes pour noter ce que j'observe</label></details>`;
+function keptBox(id){const f=FAV.filter(x=>x.m===id);
+  if(!f.length)return `<p class="note" style="margin:0">Touchez le ♥ à côté d'une idée pour la garder : elle apparaîtra ici, prête à télécharger en PDF.</p>`;
+  const sub={};f.forEach(x=>(sub[x.g]=sub[x.g]||[]).push(x));
+  return `<div class="kept dlbox"><h3>♥ Mes idées gardées pour ce moment (${f.length})</h3>
+   ${Object.entries(sub).map(([k,arr])=>`<div><div class="grp">${esc(k)}</div><ul>${arr.map(x=>`<li><span>${esc(x.t)}</span><button class="x" aria-label="Retirer" data-rm="${esc(key(x.m,x.g,x.t))}">×</button></li>`).join("")}</ul></div>`).join("")}
+   ${pdfOpts()}<div class="prow"><button class="btn" data-dl="${id}">Télécharger en PDF</button><span class="msg" role="status"></span></div>
+   <p class="note" style="margin:0">Astuce : affichez-le à l'endroit où le moment se passe.</p></div>`}
+function allBox(){const G=groups();if(!G.length)return"";const N=G.reduce((n,g)=>n+g.items.length,0);
+  return `<div class="dlbox allbox"><h3>♥ Toutes mes idées gardées (${N})</h3><div class="chips">${G.map(g=>`<span>${esc(g.title)} : ${g.items.length}</span>`).join("")}</div>
+   ${pdfOpts()}<div class="prow"><button class="btn" data-dl="all">Tout télécharger en un seul PDF</button><span class="msg" role="status"></span></div></div>`}
+function moiBox(){const g=groups().find(x=>x.id==="moi");
+  return `<div class="dlbox"><h3>Mon PDF : mes stratégies d'autorégulation</h3>${g?`<p class="note" style="margin:0">${g.items.length} stratégie${g.items.length>1?"s":""} : celles que vous avez écrites et celles choisies dans la banque.</p>${pdfOpts()}<div class="prow"><button class="btn" data-dl="moi">Télécharger en PDF</button><span class="msg" role="status"></span></div>`:`<p class="note" style="margin:0">Écrivez vos stratégies ou choisissez-en dans la banque : vous pourrez ensuite les télécharger en PDF.</p>`}</div>`}
+
+/* ================= PDF ================= */
+let DL=null;
+(async()=>{try{DL=window.claude&&window.claude.use?await window.claude.use("downloads"):null}catch(e){DL=null}})();
+async function savePdf(filename,blob){if(DL){try{return await DL.save({filename,data:blob})}catch(e){if(!(e&&(e.code==="unavailable"||e.code==="not_granted")))throw e}}
+  const u=URL.createObjectURL(blob);const a=document.createElement("a");a.href=u;a.download=filename;a.target="_blank";a.rel="noopener";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),60000);return window.claude?"fallback":"ok"}
+function imgData(name){return new Promise(res=>{const i=new Image();i.onload=()=>{try{const c=document.createElement("canvas");c.width=i.naturalWidth;c.height=i.naturalHeight;c.getContext("2d").drawImage(i,0,0);res({d:c.toDataURL("image/png"),w:i.naturalWidth,h:i.naturalHeight})}catch(e){res(null)}};i.onerror=()=>res(null);i.src="img/"+name+".webp"})}
+const pt=s=>String(s).replace(/[’‘]/g,"'").replace(/[“”]/g,'"').replace(/œ/g,"oe").replace(/Œ/g,"Oe").replace(/→/g,"->").replace(/·/g,"-").replace(/…/g,"...");
+const hex=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+async function buildPdf(which){
+  const {jsPDF}=window.jspdf;const doc=new jsPDF({unit:"mm",format:"letter"});
+  const W=215.9,H=279.4,M=16,CW=W-2*M;let y=0;
+  const INK=[58,53,80],MUTED=[122,114,134];
+  const G=groups().filter(g=>which==="all"||g.id===which);
+  const imgs={};await Promise.all(G.map(async g=>{imgs[g.id]=await imgData(g.img)}));const logo=await imgData("logo"),hero=await imgData("coregulation");
+  const footer=()=>{doc.setFont("helvetica","normal");doc.setFontSize(8.5);doc.setTextColor(...MUTED);doc.text(pt("Virginie Clavel et Valérie Ferron, ergothérapeutes"),W-M,H-9,{align:"right"});if(logo)doc.addImage(logo.d,"PNG",M,H-17,11,11*logo.h/logo.w)};
+  const need=h=>{if(y+h>H-22){footer();doc.addPage();y=18}};
+  // en-tête
+  doc.setFillColor(253,228,236);doc.roundedRect(M,12,CW,34,8,8,"F");doc.setFillColor(255,244,217);doc.circle(W-M-20,29,15,"F");
+  if(hero){const hh=30,ww=hh*hero.w/hero.h;doc.addImage(hero.d,"PNG",W-M-20-ww/2,14,ww,hh)}
+  doc.setFont("helvetica","bold");doc.setFontSize(20);doc.setTextColor(184,50,79);doc.text(pt("Mes idées à essayer"),M+8,26);
+  doc.setFont("helvetica","normal");doc.setFontSize(10.5);doc.setTextColor(...MUTED);
+  const who=[PROF.name,PROF.group].filter(Boolean).join("  -  ");
+  doc.text(pt((who?who+"   ":"")+new Date().toLocaleDateString("fr-CA",{year:"numeric",month:"long",day:"numeric"})),M+8,34);
+  doc.setFontSize(9.5);doc.setFont("helvetica","italic");doc.text(pt("Une ou deux idées à la fois : j'essaie, j'observe, j'ajuste."),M+8,40);
+  y=56;
+  G.forEach((g,gi)=>{
+    need(40);const col=hex(g.c),bg=hex(g.bg);
+    doc.setFillColor(...bg);doc.roundedRect(M,y,CW,22,7,7,"F");doc.setFillColor(...col);doc.roundedRect(M,y,3.2,22,1.6,1.6,"F");
+    const im=imgs[g.id];if(im){const h=26,w=Math.min(h*im.w/im.h,44);doc.addImage(im.d,"PNG",W-M-w-4,y-3,w,w*im.h/im.w)}
+    doc.setFont("helvetica","bold");doc.setFontSize(15);doc.setTextColor(...col);doc.text(pt(g.title),M+8,y+13.5);
+    y+=30;
+    const sub={};g.items.forEach(f=>(sub[f.g]=sub[f.g]||[]).push(f));
+    Object.entries(sub).forEach(([k,arr])=>{
+      need(12);doc.setFont("helvetica","bold");doc.setFontSize(10);doc.setTextColor(...col);doc.text(pt(k).toUpperCase(),M+2,y);y+=5.5;
+      arr.flatMap(f=>String(f.t).split("\n").map(s=>s.trim()).filter(Boolean)).forEach(t=>{doc.setFont("helvetica","normal");doc.setFontSize(11);doc.setTextColor(...INK);const lines=doc.splitTextToSize(pt(t),CW-14);need(lines.length*5.4+1.5);
+        doc.setDrawColor(...col);doc.setLineWidth(.5);doc.roundedRect(M+3,y-3.5,3.8,3.8,1,1,"S");
+        lines.forEach((l,i)=>{doc.text(l,M+10,y+i*5.4)});y+=lines.length*5.4+2});
+      y+=2.5});
+    if(PROF.lines){need(28);doc.setFont("helvetica","italic");doc.setFontSize(9.5);doc.setTextColor(...MUTED);doc.text(pt("Ce que j'ai observé :"),M+2,y);y+=7;doc.setDrawColor(215,205,200);doc.setLineWidth(.3);doc.setLineDashPattern([1,1.2],0);for(let i=0;i<3;i++){doc.line(M+2,y,W-M,y);y+=7.5}doc.setLineDashPattern([],0)}
+    y+=6;
+  });
+  footer();
+  return doc.output("blob");
+}
+async function buildFichePdf(){
+  const {jsPDF}=window.jspdf;const doc=new jsPDF({unit:"mm",format:"letter"});
+  const W=215.9,H=279.4,M=16,CW=W-2*M;let y=0;const INK=[58,53,80],MUTED=[122,114,134],ROSE=[184,50,79],TEAL=[47,122,102];
+  const logo=await imgData("logo");
+  const footer=()=>{doc.setFont("helvetica","normal");doc.setFontSize(8.5);doc.setTextColor(...MUTED);doc.text(pt("Virginie Clavel et Valérie Ferron, ergothérapeutes"),W-M,H-9,{align:"right"});if(logo)doc.addImage(logo.d,"PNG",M,H-17,11,11*logo.h/logo.w)};
+  const need=h=>{if(y+h>H-22){footer();doc.addPage();y=18}};
+  const head=(t,c)=>{need(16);const C=c||TEAL,F=C===ROSE?[253,233,229]:[227,242,236];y+=1;doc.setFillColor(...F);doc.roundedRect(M,y-5.2,CW,8,3,3,"F");doc.setFillColor(...C);doc.roundedRect(M,y-5.2,2.4,8,1.2,1.2,"F");doc.setFont("helvetica","bold");doc.setFontSize(11.5);doc.setTextColor(...C);doc.text(pt(t),M+5,y);y+=8};
+  const para=(t,o={})=>{if(!t)return;doc.setFont("helvetica",o.st||"normal");doc.setFontSize(o.sz||10.5);doc.setTextColor(...(o.c||INK));doc.splitTextToSize(pt(t),CW-(o.ind||0)).forEach(l=>{need(5.5);doc.text(l,M+(o.ind||0),y);y+=5.2})};
+  const checks=(arr)=>arr.forEach(t=>{need(6);doc.setDrawColor(...TEAL);doc.setFillColor(...TEAL);doc.roundedRect(M+1,y-3.3,3.4,3.4,.7,.7,"FD");para(t,{ind:7});y+=.6});
+  const m=MOMENTS.find(x=>x.id===FI.moment);const mim=m?await imgData(m.img):null,dim=FI.dispo?await imgData(FI.dispo==="oui"?"gauge2":"surcharge"):null;
+  doc.setFillColor(227,242,236);doc.roundedRect(M,12,CW,28,8,8,"F");
+  if(mim){const hh=30,ww=Math.min(hh*mim.w/mim.h,48);doc.addImage(mim.d,"PNG",W-M-ww-4,11,ww,ww*mim.h/mim.w)}
+  doc.setFont("helvetica","bold");doc.setFontSize(18);doc.setTextColor(...TEAL);doc.text(pt("Ma fiche : lire la situation"),M+8,25);
+  doc.setFont("helvetica","normal");doc.setFontSize(10);doc.setTextColor(...MUTED);
+  doc.text(pt([PROF.name,PROF.group].filter(Boolean).join(" - ")+(PROF.name||PROF.group?"   ":"")+new Date().toLocaleDateString("fr-CA",{year:"numeric",month:"long",day:"numeric"})+(m?"   Moment : "+m.title:"")),M+8,33);
+  y=52;
+  head("Description de la situation");para(FI.desc||"(non remplie)",{st:FI.desc?"normal":"italic",c:FI.desc?INK:MUTED});y+=3;
+  head("L'enfant est-il disponible?");if(dim){const hh=12,ww=hh*dim.w/dim.h;doc.addImage(dim.d,"PNG",W-M-ww-2,y-4,ww,hh)}
+  if(FI.dispo==="oui"){checks(["Oui, mais pas ajusté à l'activité"]);if(FI.signes){para("Signes observés : "+FI.signes)}}
+  if(FI.dispo==="non"){checks(["Non, mode survie activé",...SURV.filter(s=>FI.surv.includes(s[0])).map(s=>s[1]+" : "+s[2])])}
+  y+=3;
+  const sensPdf=()=>{const sel=(FI.sensm||[]).filter(k=>k.startsWith(FI.moment+"|"));if(!sel.length)return;head("Le sensoriel dans ce moment");"HBRA".split("").forEach(p=>{const it=OBSM[FI.moment].filter(x=>x[0]===p&&sel.includes(FI.moment+"|"+x[2]));if(it.length)para(OBSP[p][0]+" : "+it.map(x=>x[2]+(x[1]?" ("+x[1].toLowerCase()+")":"")).join("; "))});y+=3};
+  if(FI.dispo==="non"){head("Mode survie activé : comment j'interviens",ROSE);para("Pendant",{st:"bold"});checks(FI.pend);para(FI.pendant);y+=2;para("Après, quand redescendu",{st:"bold"});checks(FI.apr);para(FI.apres);y+=3}
+  if(FI.dispo==="non"&&FI.fact.length){head("Ce qui a influencé la régulation");FACT.forEach(f=>{const sel=f.items.filter(i=>FI.fact.includes(f.k+"|"+i));if(sel.length)para(f.t+" : "+sel.join(", "))});y+=3}
+  if(FI.dispo==="non"){sensPdf();if(FI.interv.length||FI.intervNote){head("Pour prévenir : idées d'adaptation",ROSE);checks(FI.interv);para(FI.intervNote);y+=3}}
+  if(FI.dispo==="oui"){
+    head("Ce qui influence la régulation");
+    FACT.forEach(f=>{const sel=f.items.filter(i=>FI.fact.includes(f.k+"|"+i));if(sel.length)para(f.t+" : "+sel.join(", "))});if(!FI.fact.length)para("(rien de coché)",{st:"italic",c:MUTED});y+=3;
+    sensPdf();
+    head("L'enfant essaie-t-il de se réguler? Est-ce efficace?");
+    if(FI.essaie)para("Essaie-t-il de se réguler? "+(FI.essaie==="oui"?"Oui":"Non"));
+    if(FI.efficace)para("Efficace? "+({oui:"Oui : je respecte",part:"Partiellement : j'ajuste",non:"Non : j'interviens"})[FI.efficace]);
+    para(FI.essaieNote);y+=3;
+    head("Mes interventions",ROSE);checks(FI.interv);para(FI.intervNote);if(!FI.interv.length&&!FI.intervNote)para("(aucune)",{st:"italic",c:MUTED});y+=3;
+  }
+  head("Comment prévenir une situation semblable");para(FI.prevenir||"(non rempli)",{st:FI.prevenir?"normal":"italic",c:FI.prevenir?INK:MUTED});y+=3;
+  head("Et moi, comme adulte",ROSE);para("Mon état au moment de la situation",{st:"bold"});para(FI.etat||"-");y+=1.5;para("Comment je me régule d'abord",{st:"bold"});para(FI.regule||"-");
+  footer();return doc.output("blob");
+}
+async function ficheDownload(btn){const msg=$("#f-msg");if(!window.jspdf){msg.textContent="Le PDF n'est pas disponible pour l'instant.";return}
+  btn.disabled=true;msg.textContent="Préparation du PDF…";
+  try{const r=await savePdf("ma-fiche-situation.pdf",await buildFichePdf());msg.textContent=r==="fallback"?"Si le PDF ne se télécharge pas, ouvrez l'outil en étant connectée à un compte Claude, puis réessayez.":"PDF prêt."}
+  catch(err){const c=err&&err.code;msg.textContent=c==="declined"?"Téléchargement annulé.":(c==="unavailable"||c==="not_granted")?"Le téléchargement n'est pas disponible ici.":"Le PDF n'a pas pu être créé. Réessayez."}
+  finally{btn.disabled=false}}
+async function doDownload(which,btn){
+  const msg=(btn.closest(".dlbox")||document).querySelector(".msg")||{};if(!window.jspdf){msg.textContent="Le PDF n'est pas disponible pour l'instant. Réessayez dans un moment.";return}
+  btn.disabled=true;msg.textContent="Préparation du PDF…";
+  try{const blob=await buildPdf(which);const g=groups().find(x=>x.id===which);
+    const r=await savePdf("mes-idees-"+(which==="all"?"autoregulation":which)+".pdf",blob);msg.textContent=r==="fallback"?"Si le PDF ne se télécharge pas, ouvrez l'outil en étant connectée à un compte Claude, puis réessayez.":"PDF prêt.";}
+  catch(err){const c=err&&err.code;msg.textContent=c==="declined"?"Téléchargement annulé.":c==="rate_limited"?"Une fenêtre de téléchargement est déjà ouverte. Réessayez dans un instant.":(c==="unavailable"||c==="not_granted")?"Le téléchargement n'est pas disponible ici.":"Le PDF n'a pas pu être créé. Réessayez.";}
+  finally{btn.disabled=false}
+}
+
+/* ================= Événements ================= */
+document.addEventListener("click",e=>{
+  const h=e.target.closest("[data-m][data-t]");
+  if(h){const on=toggleFav(h.dataset.m,h.dataset.g,h.dataset.t);h.setAttribute("aria-pressed",on);if(curView==="moments"&&curMoment){const k=$("#kept");if(k)k.innerHTML=keptBox(curMoment)}if(curView==="moi"){const k=$("#moi-pdf");if(k)k.innerHTML=moiBox()}return}
+  const o=e.target.closest("[data-open]");if(o){curMoment=o.dataset.open;renderMoments();setHash("m-"+curMoment);scrollTo({top:0,behavior:"smooth"});return}
+  if(e.target.closest("[data-close]")){curMoment=null;renderMoments();setHash("moments");return}
+  const mo=e.target.closest("[data-mopen]");if(mo){const id=mo.dataset.mopen;MOPEN=MOPEN===id?"":id;MINE.forEach(m=>{const el=$("#mb-"+m.id);if(el)el.outerHTML=mboxHTML(m)});return}
+  const ma=e.target.closest("[data-madd]");if(ma){const id=ma.dataset.madd,t=ma.dataset.t;let L=noteLines(id);L=L.includes(t)?L.filter(x=>x!==t):[...L,t];NOTES[id]=L.join("\n");store.set("aq-notes",NOTES);const m=MINE.find(x=>x.id===id);$("#mb-"+id).outerHTML=mboxHTML(m);const k=$("#moi-pdf");if(k)k.innerHTML=moiBox();return}
+  const tr=e.target.closest("[data-tree]");if(tr){FI.dispo=tr.dataset.tree;saveF();show("lire");scrollTo({top:0,behavior:"smooth"});return}
+  const g=e.target.closest("[data-goto]");if(g&&g.hasAttribute("data-apropos")){show("accueil");const d=$("#apropos");if(d){d.open=true;d.scrollIntoView({behavior:"smooth"})}return}if(g){if(g.dataset.goto==="moments")curMoment=null;show(g.dataset.goto);scrollTo({top:0,behavior:"smooth"});return}
+  const fm=e.target.closest("[data-fm]");if(fm){FI.moment=FI.moment===fm.dataset.fm?"":fm.dataset.fm;saveF();document.querySelectorAll("[data-fm]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.fm===FI.moment));const sg=$("#sugg");if(sg)sg.innerHTML=suggestions();const fs=$("#f-sens");if(fs)fs.innerHTML=ficheSens();return}
+  const fd=e.target.closest("[data-fd]");if(fd){FI.dispo=fd.dataset.fd;saveF();const y=scrollY;renderLire();scrollTo({top:y});return}
+  const fe=e.target.closest("[data-fe]");if(fe){const [k,val]=fe.dataset.fe.split("|");FI[k]=val;if(k==="essaie"&&val==="non")FI.efficace="";saveF();const y=scrollY;renderLire();scrollTo({top:y});return}
+  if(e.target.closest("[data-freset]")){$("#f-confirm").innerHTML=`<div class="confirm"><span style="flex:1">Effacer la fiche et en commencer une nouvelle?</span><button class="btn pink" data-fresetok>Effacer</button><button class="btn soft" data-fresetno>Annuler</button></div>`;$("#f-confirm").scrollIntoView({behavior:"smooth",block:"center"});return}
+  if(e.target.closest("[data-fresetok]")){FI=Object.assign({},F0,{surv:[],pend:[],apr:[],fact:[],sensm:[],interv:[]});saveF();renderLire();scrollTo({top:0});return}
+  if(e.target.closest("[data-fresetno]")){$("#f-confirm").innerHTML="";return}
+  const fp=e.target.closest("[data-fpdf]");if(fp){ficheDownload(fp);return}
+  const pi=e.target.closest("[data-pi]");if(pi){PI=Math.max(0,Math.min(CASES.length-1,PI+ +pi.dataset.pi));renderPratique();return}
+  const dl0=e.target.closest("[data-delline]");if(dl0){const k=+dl0.dataset.delline;SX.lines.splice(k,1);SX.act=SX.lines.length?Math.min(SX.act,SX.lines.length-1):-1;if(SX.act>k||SX.act>=SX.lines.length)SX.act=SX.lines.length-1;const y=scrollY;renderSens();scrollTo({top:y});return}
+  const ln=e.target.closest("[data-line]");if(ln&&!e.target.closest("[data-delline]")){SX.act=+ln.dataset.line;const y=scrollY;renderSens();scrollTo({top:y});return}
+  if(e.target.closest("[data-addline]")){SX.lines.push({corps:"",sens:[]});SX.act=SX.lines.length-1;const y=scrollY;renderSens();scrollTo({top:y});return}
+  const sx=e.target.closest("[data-sx]");if(sx){const f=sx.dataset.sx,v=sx.dataset.v;
+    if(f==="corps"){const k=SX.lines.findIndex(L=>L.corps===v);
+      if(k>=0){if(k===SX.act){SX.lines.splice(k,1);SX.act=SX.lines.length-1}else SX.act=k}
+      else if(curLine()&&!curLine().corps){curLine().corps=v}
+      else{SX.lines.push({corps:v,sens:[]});SX.act=SX.lines.length-1}}
+    else if(f==="sens"){if(!curLine()){SX.lines.push({corps:"",sens:[]});SX.act=SX.lines.length-1}const L=curLine();L.sens=L.sens.includes(v)?L.sens.filter(x=>x!==v):[...L.sens,v]}
+    else{SX.veut=SX.veut.includes(v)?SX.veut.filter(x=>x!==v):[...SX.veut,v]}
+    const y=scrollY;renderSens();scrollTo({top:y});return}
+  const ss=e.target.closest("[data-sxsub]");if(ss){SX.sub=ss.dataset.sxsub;renderSens();scrollTo({top:$("#view-sens").getBoundingClientRect().top+scrollY-80,behavior:"smooth"});return}
+  const fo=e.target.closest("[data-fopen]");if(fo){SX.open=SX.open===fo.dataset.fopen?"":fo.dataset.fopen;const y=scrollY;renderSens();scrollTo({top:y});return}
+  const sm=e.target.closest("[data-sxmode]");if(sm){SX.mode=sm.dataset.sxmode;renderSens();return}
+  const sl=e.target.closest("[data-sxlvl]");if(sl){SX.lvl=+sl.dataset.sxlvl;const y=scrollY;renderSens();scrollTo({top:y});return}
+  if(e.target.closest("[data-sxreset]")){SX.lines=[];SX.act=-1;SX.veut=[];const y=scrollY;renderSens();scrollTo({top:y});return}
+  const bm=e.target.closest("[data-bmode]");if(bm){breathStop();B.mode=bm.dataset.bmode;renderCoh();return}
+  if(e.target.closest("[data-mcustom]")){breathStop();B.custom=true;renderCoh();const i=$("#b-min");if(i){i.focus();i.select()}return}
+  const sqb=e.target.closest("[data-sq]");if(sqb){B.sq=+sqb.dataset.sq;breathStop();document.querySelectorAll("[data-sq]").forEach(b=>b.setAttribute("aria-pressed",+b.dataset.sq===B.sq));return}
+  const mi=e.target.closest("[data-mins]");if(mi){B.custom=false;B.mins=+mi.dataset.mins;breathStop();renderCoh();return}
+  const rh=e.target.closest("[data-rhythm]");if(rh){B.rhythm=+rh.dataset.rhythm;breathStop();document.querySelectorAll("[data-rhythm]").forEach(b=>b.setAttribute("aria-pressed",+b.dataset.rhythm===B.rhythm));return}
+  if(e.target.closest("#breath-go")||e.target.closest("#orb-btn")){B.running?breathStop():breathStart();return}
+  const rm=e.target.closest("[data-rm]");if(rm){const k=rm.dataset.rm;FKEYS.delete(k);FAV=FAV.filter(f=>key(f.m,f.g,f.t)!==k);store.set("aq-fav",FAV);if(curView==="moments"&&curMoment){const k=$("#kept");if(k)k.innerHTML=keptBox(curMoment)}else if(curView==="moi"){const k=$("#moi-pdf");if(k)k.innerHTML=moiBox()}return}
+  const dl=e.target.closest("[data-dl]");if(dl){doDownload(dl.dataset.dl,dl);return}
+});
+let ntm;document.addEventListener("input",e=>{
+  if(e.target.id==="b-min"){const v=Math.round(+e.target.value);if(v>=1&&v<=30){B.mins=v;if(B.running)breathStop()}return}
+  const fk=e.target.dataset&&e.target.dataset.f;if(fk){FI[fk]=e.target.value;clearTimeout(ntm);ntm=setTimeout(saveF,300);return}
+  const pk=e.target.dataset&&e.target.dataset.pr;if(pk){PR[PI]=PR[PI]||{};PR[PI][pk]=e.target.value;clearTimeout(ntm);ntm=setTimeout(()=>store.set("aq-pratique",PR),300);return}
+  const nk=e.target.dataset&&e.target.dataset.note;if(nk){NOTES[nk]=e.target.value;clearTimeout(ntm);ntm=setTimeout(()=>{store.set("aq-notes",NOTES);updBadge();const mp=$("#moi-pdf");if(mp&&!mp.contains(document.activeElement))mp.innerHTML=moiBox();const sv=$("#saved");if(sv){sv.textContent="Enregistré dans ce navigateur.";setTimeout(()=>sv.textContent="",1600)}},400);return}
+  const pf=e.target.dataset&&e.target.dataset.prof;if(pf&&pf!=="lines"){PROF[pf]=e.target.value;store.set("aq-prof",PROF)}
+});
+document.addEventListener("change",e=>{const mt=e.target.dataset&&e.target.dataset.mat;if(mt){MATCK=e.target.checked?[...new Set([...MATCK,mt])]:MATCK.filter(x=>x!==mt);store.set("aq-mat",MATCK);const b=$(".dlbar b");if(b)b.textContent=MAT.filter(m=>MATCK.includes(m[2])).length;return}
+  const ar=e.target.dataset&&e.target.dataset.arr;if(ar){const v=e.target.value;FI[ar]=e.target.checked?[...new Set([...FI[ar],v])]:FI[ar].filter(x=>x!==v);saveF();if(ar==="fact"){const sg=$("#sugg");if(sg)sg.innerHTML=suggestions()}if(ar==="sensm"){const sg=$("#sugg");if(sg)sg.innerHTML=suggestions();const s=e.target.closest(".obsm").querySelector("summary span");const n=FI.sensm.filter(k=>k.startsWith(FI.moment+"|")).length;const b=s.querySelector(".obn");if(b){if(n)b.textContent=n;else b.remove()}else if(n)s.insertAdjacentHTML("beforeend",` <b class="obn">${n}</b>`)}return}
+  if(e.target.dataset&&e.target.dataset.prof==="lines"){PROF.lines=e.target.checked;store.set("aq-prof",PROF)}});
+
+/* Observations sensorielles par moment (inspiré du questionnaire sensoriel, Building Bridges through Sensory Integration, traduction libre) */
+const OBSM={
+ sieste:[["H", "Auditif", "Est facilement distrait par les bruits"], ["R", "Proprioception, vestibulaire", "Bouge beaucoup, change constamment de position"], ["R", "Proprioception, toucher", "Recherche les pressions fortes (câlins, couverture serrée)"], ["R", "Proprioception, toucher", "Aime se coincer dans de petits endroits"], ["A", "", "A de la difficulté à se calmer"]],
+ habillage:[["H", "Toucher", "N'aime pas les vêtements rigides (exemple : jeans)"], ["H", "Toucher", "N'aime pas les coutures, les ceintures, les élastiques aux poignets ou aux chevilles"], ["H", "Toucher", "Les étiquettes de vêtements doivent être retirées"], ["H", "Toucher", "Retire souvent sa tuque, ses mitaines ou son cache-cou"], ["H", "Toucher", "Tolère peu de vêtements; a de la difficulté avec les changements de saison"], ["H", "Toucher", "S'oppose pendant l'habillage"], ["H", "Toucher", "A de la difficulté à tolérer la proximité de ses pairs dans le vestiaire"], ["H", "Auditif", "Est facilement distrait par les bruits du vestiaire"], ["B", "Toucher", "Ne s'aperçoit pas que ses vêtements sont entortillés"], ["B", "Toucher", "Ne remarque pas que ses vêtements sont mouillés"], ["R", "Vestibulaire", "Bouge beaucoup pendant l'habillage"], ["A", "", "Difficulté motrice à enfiler les vêtements et à manipuler les attaches"]],
+ rangement:[["H", "Auditif", "Est facilement distrait par les bruits"], ["R", "Proprioception", "Cherche souvent à transporter des objets lourds"], ["R", "Proprioception, vestibulaire", "Bouge beaucoup, change constamment de position"]],
+ repas:[["H", "Oral", "Préfère la nourriture avec une seule texture"], ["H", "Oral", "N'aime pas les textures « surprises » (exemple : des nouilles dans la soupe)"], ["H", "Oral", "A souvent des haut-le-cœur pendant les repas"], ["H", "Oral", "Tolère mal les ustensiles dans sa bouche"], ["H", "Toucher", "S'essuie souvent le visage et les mains, ou tolère difficilement de se faire essuyer"], ["H", "Oral", "A une diversité alimentaire restreinte, de fortes préférences pour certains aliments"], ["H", "Odorat", "Tolère mal les fortes odeurs de nourriture"], ["H", "Auditif", "N'aime pas entendre les autres mastiquer"], ["B", "Toucher", "Ne sent pas que son visage est sale"], ["B", "Oral", "Mange tout sans distinction"], ["R", "Proprioception", "Préfère les aliments croquants"], ["R", "Proprioception, vestibulaire", "Bouge beaucoup pendant le repas"], ["R", "Toucher", "Cherche souvent à toucher et à manipuler la nourriture"], ["A", "", "Difficultés de mastication"], ["A", "", "Difficulté à manipuler les ustensiles"]],
+ causerie:[["H", "Toucher", "N'aime pas la proximité des autres enfants"], ["H", "Toucher", "Réagit fortement quand un autre enfant l'accroche"], ["H", "Toucher", "N'aime pas être dans une foule, un grand groupe"], ["H", "Auditif", "N'aime pas les endroits bruyants, se couvre les oreilles"], ["B", "Auditif", "Ne répond pas quand on dit son nom; semble dans la lune"], ["R", "Proprioception, vestibulaire", "A de la difficulté à demeurer assis, change constamment de position"], ["R", "Proprioception, toucher", "Recherche les pressions fortes (s'appuie sur les autres, câlins)"], ["R", "Toucher", "Aime manipuler de petits objets"], ["A", "", "A des difficultés de compréhension ou d'expression"]],
+ transitions:[["H", "Toucher", "Réagit fortement quand on le touche (dans le rang, par exemple)"], ["H", "Auditif", "A de la difficulté à tolérer les environnements bruyants"]],
+ jeux:[["H", "Toucher", "Réagit négativement au toucher des autres enfants ou des adultes"], ["H", "Toucher", "Préfère les jeux au sec plutôt que les jeux salissants ou mouillés"], ["H", "Toucher", "Utilise le bout des doigts plutôt que toute la main pour toucher certaines textures"], ["H", "Vestibulaire", "Devient anxieux quand ses pieds quittent le sol; n'aime pas avoir la tête en bas"], ["H", "Vestibulaire", "Évite les modules de jeux"], ["H", "Vue", "N'est pas confortable quand la lumière est forte (soleil)"], ["H", "Auditif", "Se couvre les oreilles quand il joue; est facilement distrait par les bruits"], ["B", "Vestibulaire", "Réagit peu même poussé haut sur la balançoire"], ["R", "Toucher", "Touche les objets ou les personnes excessivement"], ["R", "Proprioception, vestibulaire", "Préfère les jeux qui bougent beaucoup; prend des risques"], ["R", "Proprioception", "Aime se lancer par terre ou sur les murs; joue de façon brusque"], ["R", "Vue", "Aime regarder les objets tourner ou bouger"], ["R", "Auditif", "Parle fort, crie; fait constamment du bruit; est fasciné par certains bruits"], ["A", "", "Présente une maladresse motrice qui l'empêche de s'engager dans certains jeux"]]};
+const OBSP={H:["Peut évoquer une hyperréactivité","hy"],B:["Peut évoquer une hyporéactivité","ho"],R:["Peut évoquer une recherche sensorielle","re"],A:["Autres pistes à explorer","au"]};
+function obsGroups(id,inp){const L=OBSM[id];
+  return `<div class="obsg">${"HBRA".split("").map(p=>{const it=L.filter(x=>x[0]===p);return it.length?`<div class="obc ${OBSP[p][1]}"><h4>${OBSP[p][0]}</h4>${inp?it.map(([,s,t])=>`<label class="cbx">${inp(id+"|"+t)}<span>${esc(t)}${s?` <i class="snc">${s}</i>`:""}</span></label>`).join(""):`<ul>${it.map(([,s,t])=>`<li>${esc(t)}${s?` <i class="snc">${s}</i>`:""}</li>`).join("")}</ul>`}</div>`:""}).join("")}</div>`}
+const OBSSRC=`<p class="src">Inspiré du questionnaire sensoriel (traduction libre) de <i>Building Bridges through Sensory Integration</i> et du bloc 2 de la formation, adapté aux services de garde.</p>`;
+function obsMoment(id){if(!OBSM[id])return"";
+  return `<details class="obsm"><summary><span>👀 Ce qu'on peut observer : le sensoriel dans ce moment</span></summary>
+   <p class="note" style="margin:0">Des signes possibles, regroupés selon ce qu'ils peuvent évoquer. Un seul signe ne veut rien dire : on regarde ce qui se répète, dans plusieurs moments, et on garde en tête que le sensoriel n'existe jamais tout seul.</p>
+   ${obsGroups(id)}
+   ${OBSSRC}
+   <div class="prow"><button class="btn soft" data-goto="sensoriel">Comprendre les profils sensoriels</button></div></details>`}
+function ficheSens(){const id=FI.moment;
+  if(!id)return `<details class="obsm"><summary><span>👀 Le sensoriel dans ce moment</span></summary><p class="note" style="margin:0">Choisissez le moment de la journée, en haut de la fiche, pour voir les signes sensoriels à observer.</p></details>`;
+  const m=MOMENTS.find(x=>x.id===id),n=FI.sensm.filter(k=>k.startsWith(id+"|")).length;
+  return `<details class="obsm" ${n?"open":""}><summary><span>👀 Le sensoriel dans ce moment : ${esc(m.title.toLowerCase())}${n?` <b class="obn">${n}</b>`:""}</span></summary>
+   <p class="note" style="margin:0">Cochez les signes observés pendant cette situation. Ils s'ajoutent à votre fiche PDF.</p>
+   ${obsGroups(id,k=>`<input type="checkbox" data-arr="sensm" value="${esc(k)}" ${FI.sensm.includes(k)?"checked":""}>`)}${OBSSRC}</details>`}
+
+/* ================= Fiches info (facteurs cliquables) ================= */
+const ACC=[["8h","Réveil difficile"],["8h30","Vêtements inconfortables"],["9h","Trajet bruyant"],["9h30","Local lumineux"],["10h","Activité de bricolage, textures"],["11h","Groupe très bruyant"],["11h30","Chicane avec un ami pour un jouet"]];
+const INFO={
+ moteur:{t:"Le petit moteur",img:"moteur",html:`
+  <p>Chaque enfant a un « petit moteur » interne qui tourne à différentes vitesses.</p>
+  <div class="tri">
+   <div class="tcol lent"><h4>Lent</h4><p class="tq">Somnolent, peu énergique, prêt à se reposer</p>${ul(["S'endormir le soir","Repos après le repas","Moment calme"])}</div>
+   <div class="tcol moy"><h4>Moyen</h4><p class="tq">Prêt à apprendre, à interagir, attentif</p>${ul(["Apprentissages ou jeux sédentaires","Rester assis lors des repas","Être attentif lors des consignes","Activités de routine"])}</div>
+   <div class="tcol vite"><h4>Vite</h4><p class="tq">Alerte, prêt à bouger</p>${ul(["Activités physiques","Courir, sauter","Faire du sport","Crier des encouragements"])}</div>
+  </div>
+  <p class="rule">Un enfant peut être bien régulé en bougeant. Le mouvement n'est pas automatiquement un signe de dérégulation.</p>
+  <div class="panel p-cream"><h4>L'autorégulation</h4><p style="margin:0">La capacité à atteindre le niveau d'éveil approprié, à le <b>maintenir</b> pendant l'activité, et à gérer ses émotions et comportements efficacement.</p></div>`},
+ age:{t:"Âge et développement",img:"child",html:`
+  <div class="panel p-sky"><h4>Petite enfance</h4>${ul(["Autorégulation principalement par l'adulte (corégulation)","Stratégies surtout inconscientes et corporelles","Besoin constant de soutien externe"])}</div>
+  <div class="panel p-mint"><h4>De 3 à 6 ans, l'enfant peut…</h4>${ul(["Demander des jouets sans les arracher des mains","Attendre une petite période de temps lorsque l'adulte le demande","Se remettre assez rapidement d'une déception ou d'un changement de plan","Utiliser des solutions non physiques lorsqu'un autre enfant prend son jouet","Jouer dans un groupe sans devenir trop excité","Écouter une ou deux histoires"])}<p class="src">Source : Dawson et al., 2025</p></div>
+  <div class="panel p-cream"><h4>« Meet them where they are »</h4><p style="margin:0"><i>Rejoindre l'enfant où il en est.</i> On ajuste nos attentes aux capacités réelles de l'enfant, et non à ce qu'il serait supposé faire à son âge.</p></div>
+  <p class="rule">Mon attente est-elle réaliste pour cet enfant, aujourd'hui?</p>`},
+ temp:{t:"Le tempérament",img:"gauge2",html:`
+  <p>« Qui je suis » : le tempérament regroupe plusieurs caractéristiques. Quelques questions pour observer :</p>
+  <div class="tlist">${[["Réaction à la nouveauté","S'approche-t-il facilement de ce qui est nouveau, ou a-t-il besoin de temps?"],["Adaptabilité","S'ajuste-t-il rapidement aux changements?"],["Intensité de réaction","Réagit-il fort ou doucement, dans la joie comme dans la colère?"],["Humeur","Est-il plutôt enjoué, ou plus souvent sérieux?"],["Capacité de concentration","Reste-t-il longtemps sur une même activité?"],["Niveau d'activité","Son moteur de base est-il lent, moyen ou rapide?"],["Sensibilité sensorielle","Remarque-t-il beaucoup, ou peu, les bruits, les textures, les lumières?"]].map(([a,b])=>`<div class="ti"><b>${a}</b><span>${b}</span></div>`).join("")}</div>
+  <p class="src">Source : Naître et grandir, 2022</p>
+  <h3 class="ih">Le niveau d'activité</h3>
+  <img class="iimg" src="img/gauge2.webp" alt="Un tracteur, une auto et une voiture de course">
+  <div class="tri">
+   <div class="tcol lent"><h4>Bas</h4>${ul(["Préfère des activités calmes","Longues périodes tranquilles","Moteur naturellement lent"])}</div>
+   <div class="tcol moy"><h4>Moyen</h4>${ul(["Alterne calme et mouvement","Moteur naturellement moyen"])}</div>
+   <div class="tcol vite"><h4>Élevé</h4>${ul(["Périodes inactives très courtes","A besoin de bouger pour être bien","Beaucoup d'énergie, bouge constamment","Moteur naturellement vite"])}</div>
+  </div>
+  <p class="rule">Mon rôle : offrir des occasions pour <b>tous</b> les tempéraments!</p>
+  <div class="grid2"><div class="panel p-grey"><h4>Ce n'est PAS</h4>${ul(["Un trouble","De la mauvaise éducation","Un manque de discipline","Forcément du TDAH"])}</div>
+  <div class="panel p-mint"><h4>C'est</h4>${ul(["Le rythme de base de cet enfant","À respecter et à accommoder"])}</div></div>`},
+ profil:{t:"Le profil sensoriel",img:"s-hyper",html:`
+  <div class="grid2"><div class="panel p-rose pimg"><img src="img/s-hyper.webp" alt=""><div><h4>Hyperréactivité</h4><p>Réagit BEAUCOUP aux stimuli. Le filtre laisse tout passer, le seuil est très bas : ça déborde vite.</p></div></div>
+  <div class="panel p-sky pimg"><img src="img/s-hypo.webp" alt=""><div><h4>Hyporéactivité</h4><p>Réagit PEU aux stimuli. Presque rien ne passe, le seuil est très haut : il faut énormément de stimuli.</p></div></div></div>
+  <p class="rule">Le sensoriel n'existe jamais tout seul. Avant de se demander « quel est son profil sensoriel? », on se demande : « Dans quel état est son système nerveux en ce moment? »</p>
+  <div class="dlbar"><span style="flex:1">Les 8 sens, ce qu'on observe par sens, la recherche sensorielle…</span><button class="btn" data-goto="sensoriel">Voir Le sensoriel</button></div>`},
+ transition:{t:"Les transitions",img:"moment2",html:`
+  <p>Quand le système nerveux perçoit une menace (fatigue, changement de routine, séparation difficile, climat tendu…), le corps devient plus réactif. Dans ces moments-là, <b>les transitions deviennent plus difficiles</b>, et les demandes ordinaires deviennent « trop ».</p>
+  <div class="dlbar"><span style="flex:1">Des idées concrètes pour les transitions.</span><button class="btn soft" data-goto-m="transitions">Voir le moment</button></div>`}
+};
+const INFOMAP={"enfant|Âge et développement":"age","enfant|Tempérament":"temp","enfant|Profil sensoriel":"profil","moment|Transitions":"transition"};
+const fitem=(k,i)=>{const inf=INFOMAP[k+"|"+i];return inf?`<div class="frow">${cb("fact",k+"|"+i,i)}<button class="ibtn" data-info="${inf}" aria-label="En savoir plus : ${esc(i)}">?</button></div>`:cb("fact",k+"|"+i,i)};
+function openInfo(k){const d=$("#info"),x=INFO[k];if(!d||!x)return;
+  d.innerHTML=`<div class="ihead"><img src="img/${x.img}.webp" alt=""><h2>${x.t}</h2><button class="ix" data-iclose aria-label="Fermer">×</button></div><div class="ibody">${x.html}</div>`;
+  try{d.showModal()}catch(e){d.setAttribute("open","")}d.querySelector(".ibody").scrollTop=0}
+function closeInfo(){const d=$("#info");if(!d)return;try{d.close()}catch(e){d.removeAttribute("open")}}
+
+/* ================= Le sensoriel ================= */
+const SENS8=[
+ ["vue","Vue","Lumière, couleurs, mouvements"],["ouie","Auditif","Sons, volume"],["odorat","Odorat","Odeurs et parfums"],["gout","Oral","Saveurs et textures alimentaires"],
+ ["toucher","Toucher","Textures, température, pression"],["vestibulaire","Vestibulaire","Mouvement, équilibre, gravité (dans l'oreille interne)"],
+ ["proprioception","Proprioception","Position du corps dans l'espace, contractions musculaires"],["interoception","Intéroception","Signaux internes : faim, soif, envie de pipi, émotions, battements du cœur"]];
+const OBS={
+ toucher:{hyper:["Refuse les activités salissantes","A de la difficulté à tolérer certaines textures de vêtements","A besoin « d'une grosse bulle »","Tolère mal les contacts physiques imprévus"],hypo:["Ne remarque pas que ses vêtements sont mouillés","Ne réagit pas aux changements de température"],rech:["Manipule des objets, touche à tout"]},
+ ouie:{hyper:["Se bouche les oreilles lors de chansons ou d'activités bruyantes","Sursaute facilement à un bruit soudain","Tolère mal le bruit du mélangeur, de l'aspirateur, de la chasse d'eau"],hypo:["Ne répond pas aux appels de son prénom","Ne sursaute pas aux bruits forts","Semble dans la lune","Peut s'endormir malgré des bruits intenses"],rech:["Aime les activités bruyantes, parler fort ou faire du bruit"]},
+ gout:{hyper:["Accepte seulement 15 à 20 aliments","Refuse de goûter à de nouveaux aliments","A des haut-le-cœur face à certaines textures","Préfère les aliments connus ou commerciaux"],hypo:["Mange tout sans distinction (même les aliments périmés)"],rech:["Met des objets dans sa bouche","Mâchouille ses crayons, ses vêtements"]},
+ odorat:{hyper:["Réagit très négativement à certaines odeurs (selles, parfums, haleine)"],hypo:["Ne remarque pas les mauvaises odeurs","Ne réagit pas aux odeurs fortes"],rech:["Renifle les objets ou les personnes plus souvent que ses pairs"]},
+ vue:{hyper:["Est sensible aux lumières vives ou aux néons","A besoin de lunettes de soleil ou d'une casquette à l'extérieur","Est surstimulé dans un environnement visuellement chargé (une foule, par exemple)"],hypo:["Réagit peu si un objet arrive vers lui (exemple : un ballon)"],rech:["Recherche les lumières vives ou clignotantes","Est attiré par les mouvements rapides et les couleurs vives"]},
+ vestibulaire:{hyper:["A des craintes sur la balançoire","Panique lorsqu'il est soulevé","A besoin que ses pieds touchent toujours le sol","A le mal des transports"],hypo:["Réagit peu même poussé haut sur une balançoire ou dans un manège"],rech:["A besoin de mouvement","Adore tourner, sauter, se balancer très haut"]},
+ proprioception:{hyper:[],hypo:[],rech:["Recherche des câlins forts","Cherche à sauter, pousser, tirer, soulever","Aime transporter des objets lourds","Se jette souvent au sol"]},
+ interoception:{hyper:["Est rapidement dérangé par ses sensations internes (tolère mal la faim ou la soif, par exemple)"],hypo:["Ne reconnaît pas ses signaux internes (faim, soif, envie d'aller aux toilettes)","A de la difficulté à nommer ses émotions","Semble insensible à la fièvre, à la douleur ou aux blessures"],rech:["Recherche les activités qui font battre le cœur rapidement (activité physique vigoureuse, manèges)"]}};
+let SN={sub:"comp",prof:"hyper"};
+let OBSK=store.get("aq-obs",[]);
+const SNSUB=[["comp","Comprendre"],["obs","Observer par profil"],["rech","La recherche sensorielle"]];
+function obsSummary(){
+  const by={hyper:[],hypo:[],rech:[]};OBSK.forEach(k=>{const [s,t]=k.split("|");if(by[t])by[t].push(s)});
+  const nm=s=>(SENS8.find(x=>x[0]===s)||[,s])[1];const u=a=>[...new Set(a)].map(nm).join(", ");
+  if(!OBSK.length)return"";
+  return `<div class="panel p-cream"><h4>Ce que j'ai coché (${OBSK.length})</h4>${by.hyper.length?`<p style="margin:0"><b style="color:#b4473a">Peut évoquer une hyperréactivité :</b> ${u(by.hyper)}</p>`:""}${by.hypo.length?`<p style="margin:0"><b style="color:var(--blue)">Peut évoquer une hyporéactivité :</b> ${u(by.hypo)}</p>`:""}${by.rech.length?`<p style="margin:0"><b style="color:var(--teal)">Peut évoquer une recherche sensorielle :</b> ${u(by.rech)}</p>`:""}
+   <p class="note" style="margin:6px 0 0">Ce sont des pistes pour mieux comprendre, pas un diagnostic. Un enfant peut avoir des réactions différentes selon le sens et selon le contexte. Au besoin, parlez-en aux parents, qui pourront consulter une ergothérapeute.</p>
+   <div class="prow" style="margin-top:6px"><button class="btn soft" data-obsreset>Tout décocher</button></div></div>`}
+function renderSensoriel(){
+  const v=$("#view-sensoriel");let body="";
+  if(SN.sub==="comp")body=`
+   <div class="qcard"><h3>Les 8 sens</h3><p class="lead2">Pour comprendre les particularités sensorielles, il faut d'abord connaître tous les sens impliqués.</p>
+    <div class="s8">${SENS8.map(([k,n,d])=>`<div class="s8c"><img src="img/sn-${k}.webp" alt=""><b>${n}</b><span>${d}</span></div>`).join("")}</div>
+    <p class="rule">Les sens contribuent à notre sécurité. Tous ces sens peuvent être touchés par les particularités sensorielles!</p></div>
+   <div class="qcard"><h3>Le voyage d'une information sensorielle</h3>
+    <div class="voy">${[["1","Réception","Les sens captent l'information"],["2","Filtration","Le cerveau filtre : important ou pas?"],["3","Interprétation","Qu'est-ce que ça veut dire?"],["4","Réaction","Le corps répond : action, émotions"]].map(([n,a,b])=>`<div class="vst"><i>${n}</i><b>${a}</b><span>${b}</span></div>`).join("")}</div>
+    <div class="panel p-lilac"><h4>La modulation sensorielle</h4><p style="margin:0">La capacité du système nerveux à filtrer, organiser et interpréter les informations sensorielles pour réagir de manière adaptée. Quand ça fonctionne bien, le cerveau filtre efficacement, ne reçoit que les informations importantes, et l'enfant peut se concentrer et se réguler facilement.</p></div></div>
+   <div class="qcard"><h3>Les 2 facteurs de la modulation sensorielle</h3>
+    <p class="lead2"><b>La filtration</b> : la capacité du cerveau à trier et filtrer les informations sensorielles. <b>Le seuil de réactivité</b> : la quantité de stimuli nécessaire pour déclencher une réaction.</p>
+    <div class="cmp"><div></div><h4 class="hh">Hyperréactivité</h4><h4 class="th">Typique</h4><h4 class="oh">Hyporéactivité</h4>
+     <b class="rl">Le filtre</b>
+     <div class="cc hy"><img src="img/s-saloon.webp" alt=""><b>Porte de saloon</b><span>Battante, jamais fermée : plein de stimuli passent en même temps.</span></div>
+     <div class="cc ty"><img src="img/s-porte.webp" alt=""><b>Porte avec un judas</b><span>Quelques stimuli passent, filtrés et choisis.</span></div>
+     <div class="cc ho"><img src="img/s-forteresse.webp" alt=""><b>Porte de forteresse</b><span>Verrouillée : les stimuli passent difficilement.</span></div>
+     <b class="rl">Le seuil</b>
+     <div class="cc hy"><img src="img/s-verre0.webp" alt=""><b>Seuil très bas</b><span>Ça déborde avec peu de stimuli.</span></div>
+     <div class="cc ty"><img src="img/s-verre1.webp" alt=""><b>Seuil typique</b><span>Tolère les stimuli du quotidien, déborde seulement quand c'est vraiment intense.</span></div>
+     <div class="cc ho"><img src="img/s-verre2.webp" alt=""><b>Seuil très haut</b><span>Il faut énormément de stimuli pour atteindre le seuil.</span></div>
+    </div></div>
+   <div class="grid2"><div class="panel p-rose pimg"><img src="img/s-hyper.webp" alt=""><div><h4>Hyperréactivité</h4><p>Réagit BEAUCOUP aux stimuli.</p><p class="sm"><b>Risque :</b> surcharge et épuisement. A besoin du soutien de l'adulte pour <b>s'apaiser</b>.</p></div></div>
+    <div class="panel p-sky pimg"><img src="img/s-hypo.webp" alt=""><div><h4>Hyporéactivité</h4><p>Réagit PEU aux stimuli.</p><p class="sm"><b>Risque :</b> blessures graves, déshydratation, coup de chaleur. Peut rechercher des sensations intenses ou avoir besoin du soutien de l'adulte pour <b>s'activer</b>.</p></div></div></div>
+   <div class="dlbar"><span style="flex:1">Ce que ça peut donner dans votre groupe, profil par profil.</span><button class="btn" data-snsub="obs">Observer par profil</button></div>`;
+  if(SN.sub==="obs"){const P=SN.prof;
+   const PR={hyper:{t:"Hyperréactivité",c:"p-rose",img:"s-hyper",d:"Réagit BEAUCOUP aux stimuli. Le filtre laisse tout passer, le seuil est très bas.",risk:"Surcharge et épuisement.",obs:["Évitement : refuse des activités ou des situations","Fuite : sort, se cache","Combat : frappe, pousse","Contrôle de l'environnement : routines, rituels","Recherche de sensations pour éviter de ressentir les sensations inconfortables"],sup:"Nécessite le soutien de l'adulte pour s'apaiser."},
+    hypo:{t:"Hyporéactivité",c:"p-sky",img:"s-hypo",d:"Réagit PEU aux stimuli. Presque rien ne passe, le seuil est très haut.",risk:"Blessures graves, déshydratation, coup de chaleur.",obs:["Recherche de sensations variées, intenses ou nouvelles"],sup:"Peut nécessiter le soutien de l'adulte pour s'activer."},
+    rech:{t:"Recherche sensorielle",c:"p-mint",img:"",d:"Cherche des sensations pour éviter les sensations inconfortables (hyperréactif), pour se sentir vivant (hyporéactif) ou parce que bouger l'aide à se sentir bien (profil typique).",risk:"",obs:[],sup:""}}[P];
+   const cards=SENS8.filter(([k])=>OBS[k][P].length).map(([k,n])=>`<div class="ocard"><div class="ohd"><img src="img/sn-${k}.webp" alt=""><b>${n}</b></div>${ul(OBS[k][P])}</div>`).join("");
+   body=`<p class="lead2">Choisissez un profil pour voir, sens par sens, à quoi il peut ressembler. Pour noter ce que vous observez chez un enfant, utilisez la fiche « Lire la situation ».</p>
+   <div class="ppick">${[["hyper","Hyperréactivité","s-hyper"],["hypo","Hyporéactivité","s-hypo"],["rech","Recherche sensorielle",""]].map(([k,n,im])=>`<button data-snprof="${k}" aria-pressed="${P===k}" class="pp-${k}">${im?`<img src="img/${im}.webp" alt="">`:`<span class="rico">↻</span>`}<span>${n}</span></button>`).join("")}</div>
+   <div class="panel ${PR.c} ${PR.img?"pimg":""}">${PR.img?`<img src="img/${PR.img}.webp" alt="">`:""}<div><h4>${PR.t}</h4><p>${PR.d}</p>${PR.risk?`<p class="sm"><b>Risque :</b> ${PR.risk}</p>`:""}${PR.obs.length?`<p class="sm" style="margin-top:8px"><b>Ce qu'on peut observer :</b></p>${ul(PR.obs)}`:""}${PR.sup?`<p class="sm"><b>${PR.sup}</b></p>`:""}</div></div>
+   <div class="ogrid">${cards}</div>
+   ${P==="hyper"?`<div class="qcard"><h3>Et que penser de l'exposition?</h3><div class="grid2">
+    <div class="panel p-grey"><h4>Exposition forcée</h4><p style="margin:0">« Touche, tu vas voir, ce n'est rien! »<br>Le système nerveux peut devenir de plus en plus réactif : c'est la <b>sensibilisation</b>.</p></div>
+    <div class="panel p-mint"><h4>Exposition douce</h4><p style="margin:0">Petits pas : l'enfant garde le choix, il sait à quoi s'attendre et il est disponible.<br>Le système nerveux peut parfois <b>s'habituer</b> graduellement.</p></div></div>
+    <p class="rule">C'est l'enfant qui guide. On observe sa réaction, et on recule si elle augmente.</p></div>`:""}
+   ${P==="rech"?`<div class="dlbar"><span style="flex:1">À quoi sert la recherche sensorielle? Quand devient-elle un risque?</span><button class="btn soft" data-snsub="rech">La recherche sensorielle</button></div>`:""}`}
+  if(SN.sub==="rech")body=`
+   <div class="qcard"><h3>La recherche sensorielle : ça sert à quoi?</h3><div class="grid3">
+    ${[["p-rose","Hyperréactif qui recherche","Cherche des sensations pour éviter de ressentir les sensations inconfortables.","Emma fait des bruits de bouche pour couvrir les bruits ambiants."],["p-sky","Hyporéactif qui recherche","A besoin de plus de sensations pour se sentir vivant.","Léo touche à tout, fait beaucoup de bruit, recherche les mouvements intenses."],["p-mint","Profil « typique » qui recherche","Bouger m'aide à me sentir bien.","Louka gigote sur sa chaise lors d'une activité de motricité fine."]].map(([c,a,b,ex])=>`<div class="panel ${c}"><h4>${a}</h4><p style="margin:0">${b}</p><p class="ex">${ex}</p></div>`).join("")}</div></div>
+   <div class="qcard"><h3>Une stratégie d'autorégulation</h3><div class="grid2">
+    <div class="panel p-mint"><h4>Elle peut aider l'enfant à…</h4>${ul(["Se calmer","Se concentrer","Gérer ses émotions","Se sentir bien dans son corps"])}<p class="sm">Elle peut l'aider à atteindre un niveau d'éveil optimal pour participer à ses occupations quotidiennes.</p></div>
+    <div class="panel p-cream"><h4>Le risque</h4>${ul(["Fait au mauvais moment","Dérange l'activité ou le groupe","Beaucoup trop, ou pas assez"])}</div></div>
+    <div class="dlbar"><span style="flex:1">L'enfant essaie-t-il de se réguler? Sa stratégie est-elle efficace pour lui et le groupe?</span><button class="btn soft" data-goto="lire">Lire la situation</button></div></div>
+   <div class="qcard"><h3>Distinction importante : recherche sensorielle ≠ TDAH</h3><div class="grid2">
+    <div class="panel p-lilac"><h4>TDAH : un diagnostic</h4><p style="margin:0">Difficultés d'attention, impulsivité, hyperactivité.</p></div>
+    <div class="panel p-mint"><h4>Recherche sensorielle : une stratégie</h4><p style="margin:0">Besoin de stimuli intenses pour se réguler.</p></div></div>
+    <p class="rule">Un enfant peut avoir une recherche sensorielle sans TDAH, ou les deux en même temps.</p>
+    <details class="reveal"><summary>Un mot sur le TDAH (DSM-5, 2013)</summary>
+     <div class="panel p-grey"><h4>Hyperactivité et impulsivité</h4>${ul(["Remue les mains ou les pieds, ou se tortille sur son siège","Se lève dans des situations où il doit rester assis","Court ou grimpe partout","A du mal à se tenir tranquille dans les jeux ou les loisirs","Agit comme s'il était « monté sur des ressorts »","Parle trop","Laisse échapper une réponse à une question qui n'est pas encore entièrement posée","A du mal à attendre son tour","Interrompt souvent les autres ou impose sa présence"])}</div>
+     <p class="note" style="margin:0">Les signes doivent être présents souvent pendant au moins 6 mois, dans au moins 2 contextes, et être plus prononcés que ceux attendus compte tenu du niveau de développement de l'enfant.</p></details></div>`;
+  v.innerHTML=`<div class="intro"><div class="kicker">Le sensoriel</div><h2>Comprendre les profils sensoriels</h2><p>Des repères, des hypothèses, des pistes. Mais à garder en tête : <b>le sensoriel n'existe jamais tout seul.</b> Les réactions d'un enfant dépendent de plusieurs facteurs, dont l'état de son système nerveux dans le moment.</p></div>
+   <div class="subtabs" role="group" aria-label="Sections">${SNSUB.map(([k,l])=>`<button data-snsub="${k}" aria-pressed="${SN.sub===k}">${l}</button>`).join("")}</div>${body}`;
+}
+document.addEventListener("click",e=>{
+  const i=e.target.closest("[data-info]");if(i){e.preventDefault();openInfo(i.dataset.info);return}
+  if(e.target.closest("[data-iclose]")||e.target.id==="info"){closeInfo();return}
+  if($("#info")&&$("#info").open&&e.target.closest("#info [data-goto],#info [data-goto-sn],#info [data-goto-m]"))closeInfo();
+  const gs=e.target.closest("[data-goto-sn]");if(gs){SN.sub=gs.dataset.gotoSn;show("sensoriel");scrollTo({top:0,behavior:"smooth"});return}
+  const gm=e.target.closest("[data-goto-m]");if(gm){curMoment=gm.dataset.gotoM;show("moments");scrollTo({top:0,behavior:"smooth"});return}
+  const s=e.target.closest("[data-snsub]");if(s){SN.sub=s.dataset.snsub;renderSensoriel();scrollTo({top:$("#view-sensoriel").getBoundingClientRect().top+scrollY-80,behavior:"smooth"});return}
+  const ss=e.target.closest("[data-snprof]");if(ss){SN.prof=ss.dataset.snprof;const y=scrollY;renderSensoriel();scrollTo({top:y});return}
+  const fmm=e.target.closest("[data-fichem]");if(fmm){FI.moment=fmm.dataset.fichem;saveF();show("lire");scrollTo({top:0,behavior:"smooth"});return}
+  if(e.target.closest("[data-obsreset]")){OBSK=[];store.set("aq-obs",OBSK);const y=scrollY;renderSensoriel();scrollTo({top:y});return}
+});
+document.addEventListener("change",e=>{const k=e.target.dataset&&e.target.dataset.obs;if(!k)return;
+  OBSK=e.target.checked?[...new Set([...OBSK,k])]:OBSK.filter(x=>x!==k);store.set("aq-obs",OBSK);const y=scrollY;renderSensoriel();scrollTo({top:y})});
+
+
+/* ================= Vue : accueil ================= */
+function renderAccueil(){
+  const G1=[["coherence","a-corps","#3f63a8","#e6eefb","Respire","J'ai besoin de souffler : quelques minutes de respiration."],
+   ["moi","brain","#b8324f","#fde4ec","Moi, l'adulte","Mes signaux d'alerte, mes stratégies, ce qui me ressource."]];
+  const G2=[["lire","gauge2","#2f7a66","#e3f2ec","Lire la situation","Je vis une situation difficile : je remplis une fiche, l'outil propose des idées."],
+   ["moments","m-repas","#c46f2a","#fdeedd","Moments de la journée","Sieste, habillage, repas, transitions… Des idées concrètes pour chaque moment."],
+   ["coreg","coregulation","#b8324f","#fde9e5","Corégulation","Prêter son calme : ma présence, ma voix, mon rythme."],
+   ["sensoriel","s-hyper","#7d58a8","#f1e8fa","Le sensoriel","Les 8 sens, les profils, la recherche sensorielle."],
+   ["pratique","glasses","#9a6b12","#fff4d9","Je me pratique","Les lunettes généreuses : reformuler sans jugement, chercher des hypothèses."],
+   ["sens","f-cartes","#3f8a4f","#e8f4e6","Mon corps, mes sensations","Explorer le corps et les sensations avec les enfants : les cartes, des jeux, le matériel."]];
+  const card=([v,img,c,bg,t,s])=>`<button class="start" data-goto="${v}" style="--c:${c};--bg:${bg}"><img src="img/${img}.webp" alt=""><span><b>${t}</b><small>${s}</small></span><i>›</i></button>`;
+  $("#view-accueil").innerHTML=`<div class="intro"><div class="kicker">Bienvenue</div><h2>Par où commencer?</h2><p>Un outil pour soutenir l'autorégulation des enfants au quotidien, en commençant par la vôtre. Choisissez ce qui vous ressemble aujourd'hui.</p></div>
+  <h3 class="sgh">Moi d'abord</h3><div class="startgrid">${G1.map(card).join("")}</div>
+  <h3 class="sgh">Avec les enfants</h3><div class="startgrid">${G2.map(card).join("")}</div>
+  <p class="rule">Moi d'abord : un adulte assez régulé peut prêter son calme à l'enfant.</p>
+  <details class="apropos" id="apropos"><summary>À propos de cet outil</summary>
+   <div class="grid2">
+    <div class="panel p-cream"><h4>Qui sommes-nous</h4><p style="margin:0">Virginie Clavel et Valérie Ferron, ergothérapeutes. Cet outil accompagne la formation « Soutenir le développement de l'autorégulation en tenant compte des particularités sensorielles ».</p></div>
+    <div class="panel p-rose"><h4>Important</h4><p style="margin:0">Cet outil donne des repères et des pistes. Il ne remplace pas une évaluation en ergothérapie et ne permet pas de poser un diagnostic. Au besoin, parlez-en aux parents, qui pourront consulter un professionnel.</p></div>
+    <div class="panel p-mint"><h4>Vos données</h4><p style="margin:0">Tout ce que vous écrivez ou cochez reste dans ce navigateur, sur cet appareil. Rien n'est envoyé ailleurs. N'écrivez jamais le nom d'un enfant ou toute information pouvant permettre de l'identifier : utilisez par exemple ses initiales.</p></div>
+    <div class="panel p-sky"><h4>Sources</h4>${ul(["Dawson, P., Guare, R. et Guare, C. (2025). Smart but scattered (2e éd.).","Équipe Naître et grandir (2022). Personnalité et tempérament.","Porges, S. W. (2022). Polyvagal theory: A science of safety.","Greene, R. W. (2008). Kids do well if they can. Phi Delta Kappan, 90(3), 160-167.","Williams, M. S. et Shellenberger, S. (2014). Alert Program [formation en ligne].","Questionnaire sensoriel : traduction libre de Building Bridges through Sensory Integration.","American Psychiatric Association (2015). DSM-5 : Manuel diagnostique et statistique des troubles mentaux (trad. française)."])}<p class="sm">La bibliographie complète est remise pendant la formation.</p></div>
+   </div></details>`;
+}
+/* ================= Navigation ================= */
+const VIEWS=["accueil","moments","lire","sensoriel","coreg","moi","coherence","sens","pratique"];let curView="accueil";
+function setHash(h){try{history.replaceState(null,"","#"+h)}catch(e){}}
+function show(v){
+  if(curView==="coherence"&&v!=="coherence")breathStop();
+  curView=v;VIEWS.forEach(x=>{$("#view-"+x).hidden=x!==v;$("#tab-"+x).setAttribute("aria-selected",x===v)});
+  ({accueil:renderAccueil,moments:renderMoments,lire:renderLire,sensoriel:renderSensoriel,coreg:renderCoreg,moi:renderMoi,coherence:renderCoh,sens:renderSens,pratique:renderPratique})[v]();
+  setHash(v==="moments"&&curMoment?"m-"+curMoment:v);
+}
+document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{if(t.dataset.view==="moments")curMoment=null;show(t.dataset.view)}));
+function fromHash(){const h=(location.hash||"").slice(1);if(h.startsWith("m-")&&MOMENTS.some(m=>m.id===h.slice(2))){curMoment=h.slice(2);show("moments")}else show(VIEWS.includes(h)?h:"accueil")}
+window.addEventListener("hashchange",fromHash);
+updBadge();fromHash();
+</script>
+</body>
+</html>
