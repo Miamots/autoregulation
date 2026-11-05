@@ -1,5 +1,5 @@
 /* Autorégulation au quotidien : fonctionnement hors ligne */
-const CACHE="autoreg-v1";
+const CACHE="autoreg-v2";
 const CORE=[
   "./",
   "index.html",

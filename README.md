@@ -16,7 +16,7 @@ Outil web qui accompagne la formation « Soutenir le développement de l'autoré
 
 ## Mettre à jour l'app
 
-Remplacez les fichiers modifiés dans le dépôt. Si vous changez des images, changez aussi le numéro `autoreg-v1` en haut de `sw.js` (par exemple `autoreg-v2`) pour que les téléphones téléchargent la nouvelle version.
+Remplacez les fichiers modifiés dans le dépôt. Si vous changez des images, changez aussi le numéro `autoreg-v2` en haut de `sw.js` (par exemple `autoreg-v3`) pour que les téléphones téléchargent la nouvelle version.
 
 ## Mettre en ligne avec GitHub Pages
 
